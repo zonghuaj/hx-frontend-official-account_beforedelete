@@ -1,0 +1,346 @@
+/*
+  HTML5
+*/
+* {
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  list-style: none;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  max-width: 750px;
+  font-family: "PingFangSC-Regular", "微软雅黑";
+  color: black;
+  background-color: #f4f5fa;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+span {
+  display: inline-block;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-input-placeholder {
+  color: #999999;
+}
+
+:-moz-placeholder {
+  color: #999999;
+}
+
+::-moz-placeholder {
+  color: #999999;
+}
+
+:-ms-input-placeholder {
+  color: #999999;
+}
+
+
+/*
+  vant
+*/
+.van-button {
+  line-height: normal;
+}
+
+.van-icon-photo-o {
+  font-size: 32px !important;
+}
+
+.van-icon-warning-o {
+  font-size: 32px !important;
+}
+
+.van-checkbox__icon {
+  height: 28px;
+  line-height: normal;
+}
+
+.van-checkbox__label {
+  font-size: 28px;
+  color: #333333;
+  line-height: normal;
+}
+
+.van-popup {
+  width: 500px;
+}
+
+.van-picker__toolbar {
+  height: 88px;
+  line-height: 88px;
+}
+
+.van-picker__cancel {
+  font-size: 28px;
+  color: #333333;
+}
+
+.van-picker__confirm {
+  font-size: 28px;
+  color: #ff6016;
+}
+
+.van-picker__title {
+  font-size: 28px;
+}
+
+.van-picker-column {
+  font-size: 28px;
+}
+
+.van-picker-column__item {
+  color: #999999;
+}
+
+.van-picker-column__item--selected {
+  color: #333333;
+}
+
+.van-radio__icon {
+  height: 28px;
+  line-height: normal;
+}
+
+.van-radio__label {
+  font-size: 28px;
+  color: #333333;
+  line-height: normal;
+}
+
+.van-rate__item:not(:last-child) {
+  padding-right: 20px;
+}
+
+.van-rate__icon {
+  font-size: 36px;
+}
+
+.van-switch {
+  width: 72px;
+  height: 36px;
+  background-color: #f7f7f7;
+  border-radius: 36px;
+}
+
+.van-switch__node {
+  width: 36px;
+  height: 36px;
+}
+
+.van-switch--on {
+  background-color: #ff6016;
+}
+
+.van-switch--on .van-switch__node {
+  -webkit-transform: translateX(36px);
+  transform: translateX(36px);
+}
+
+.van-dialog {
+  width: 600px;
+  border-radius: 5px;
+}
+
+.van-dialog__message {
+  font-size: 32px;
+  color: #333333;
+  line-height: normal;
+}
+
+.van-dialog__cancel {
+  height: 100px;
+  font-size: 32px;
+}
+
+.van-dialog__confirm {
+  height: 100px;
+  font-size: 32px;
+}
+
+.van-toast {
+  min-width: 200px;
+  font-size: 32px;
+  line-height: normal;
+  text-align: left;
+}
+
+.van-toast--text {
+  padding: 20px;
+}
+
+.van-collapse-item__title {
+  width: 630px;
+  font-size: 28px;
+  color: #333333;
+  padding: 30px 0;
+  margin: 0 30px;
+  text-align: left;
+}
+
+.van-collapse-item__title img {
+  width: 28px;
+  height: 28px;
+}
+
+.van-collapse-item__title--expanded {
+  color: #ff6016;
+}
+
+.van-collapse-item__content {
+  padding: 0;
+}
+
+.van-list__error-text, .van-list__finished-text, .van-list__loading-text {
+  font-size: 28px;
+  color: #999999;
+  line-height: normal;
+  padding: 20px 0;
+}
+
+
+/*
+  element-ui
+*/*/
+.el-radio {
+  font-size: 28px;
+  color: #333333;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #ff6016;
+  background: #ff6016;
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+  color: #ff6016;
+}
+
+.el-radio__inner {
+  width: 28px;
+  height: 28px;
+}
+
+.el-radio__inner::after {
+  width: 10px;
+  height: 10px;
+}
+
+.el-radio__label {
+  font-size: 28px;
+}
+
+.el-input__inner {
+  font-size: 28px;
+  color: #333333;
+  border: none;
+  padding: 0;
+  text-align: right;
+}
+
+.el-input__inner::-webkit-input-placeholder {
+  color: #999999;
+}
+
+.el-input__inner:-ms-input-placeholder {
+  color: #999999;
+}
+
+.el-input__inner::-ms-input-placeholder {
+  color: #999999;
+}
+
+.el-input__inner::placeholder {
+  color: #999999;
+}
+
+.el-autocomplete-suggestion li {
+  font-size: 28px;
+  color: #333333;
+  padding: 10px;
+}
+
+.el-rate__icon {
+  font-size: 36px;
+  margin-right: 20px;
+}
+
+.el-badge__content {
+  height: 30px;
+  line-height: normal;
+  font-size: 20px;
+  background-color: #ff6016;
+  border-radius: 15px;
+  padding: 0 10px;
+}
+
+.el-timeline {
+  margin: 20px 30px;
+}
+
+.el-timeline-item__wrapper {
+  top: -6px;
+  padding-left: 48px;
+  text-align: left;
+}
+
+.el-timeline-item__tail {
+  left: 13px;
+}
+
+.el-timeline-item__node--normal {
+  left: 0;
+  width: 28px;
+  height: 28px;
+  background-color: #ff6016;
+}
+
+.el-timeline-item__content {
+  font-size: 28px;
+  color: #333333;
+}
+
+.el-timeline-item__timestamp {
+  font-size: 28px;
+  color: #999999;
+}
+
+.el-image-viewer__close {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+  color: #ffffff;
+}
+
+.el-image-viewer__actions {
+  width: 400px;
+  height: 60px;
+  border-radius: 30px;
+  padding: 0 30px;
+}
+
+.el-image-viewer__actions__inner {
+  font-size: 36px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
