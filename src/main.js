@@ -6,14 +6,15 @@ import float from './utils/float'
 import rem from './utils/rem'
 import axios from 'axios'
 import VueWechatTitle from 'vue-wechat-title'
-import { Button, Cell, CellGroup, Icon, Image, Checkbox, CheckboxGroup, Popup, Picker, Radio, RadioGroup, Rate, Search, Switch, Uploader, Dialog, Toast, Collapse, CollapseItem, List } from 'vant'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/reset.css'
+
 import Pagination from 'tony-ui'
+// 全局引入按需引入UI库 vant
+import './plugins/vant'
 Vue.use(VueWechatTitle)
 Vue.use(Pagination)
-Vue.use(Button).use(Cell).use(CellGroup).use(Icon).use(Image).use(Checkbox).use(CheckboxGroup).use(Popup).use(Picker).use(Radio).use(RadioGroup).use(Rate).use(Search).use(Switch).use(Uploader).use(Dialog).use(Toast).use(Collapse).use(CollapseItem).use(List)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
@@ -21,12 +22,6 @@ Vue.config.productionTip = false
 Vue.prototype.common = common
 Vue.prototype.float = float
 Vue.prototype.rem = rem
-
-Dialog.setDefaultOptions({
-  messageAlign: 'left',
-  cancelButtonColor: '#333333',
-  confirmButtonColor: '#ff6016'
-})
 
 axios.defaults.baseURL = process.env.API_ROOT
 
