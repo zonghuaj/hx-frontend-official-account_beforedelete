@@ -28,11 +28,11 @@ export default {
       ownerNamePrefix: null,
       ownerNameSuffix: null,
       errorFlag: false
-    }
+    };
   },
   beforeMount: function () {
-    let ownerName = this.previousYear.ownerName
-    this.ownerNameSuffix = ownerName.charAt(ownerName.length - 1)
+    let ownerName = this.previousYear.ownerName;
+    this.ownerNameSuffix = ownerName.charAt(ownerName.length - 1);
   },
   mounted: function () {
   },
@@ -42,20 +42,20 @@ export default {
   methods: {
     validateName: function () {
       if (!this.ownerNamePrefix) {
-        this.errorFlag = false
-        return
+        this.errorFlag = false;
+        return;
       }
       if (this.ownerNamePrefix + this.ownerNameSuffix === this.previousYear.ownerName) {
-        this.$emit('confirm')
+        this.$emit('confirm');
       } else {
-        this.errorFlag = true
+        this.errorFlag = true;
       }
     },
     doCancel: function () {
-      this.$emit('cancel')
+      this.$emit('cancel');
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import orderApi from '@/api/order'
-import { houseBind } from '@/api/house'
+import HouseCard from '@/components/common/HouseCard';
+import orderApi from '@/api/order';
+import { houseBind } from '@/api/house';
 
 export default {
   name: 'OrderList',
@@ -60,32 +60,32 @@ export default {
       curHouse: {},
       bindHouse: [],
       list: []
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       if (this.source === 'serviceHall') {
         this.$router.push({
           name: 'serviceHall',
@@ -93,48 +93,48 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else {
         this.$router.push({
           name: 'profile'
-        })
+        });
       }
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.list = []
-      this.initPage()
+      this.curHouse = house;
+      this.list = [];
+      this.initPage();
     },
     initPage () {
       if (this.source === 'serviceHall') {
         orderApi.getHouseOrderList(this.curHouse.houseId).then(result => {
           if (result.status === 1) {
-            this.list = result.data
+            this.list = result.data;
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
+        });
       } else {
         orderApi.getOrderList().then(result => {
           if (result.status === 1) {
-            this.list = result.data
+            this.list = result.data;
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
+        });
         houseBind().then(result => {
-          this.bindHouse = result.data.data
-        })
+          this.bindHouse = result.data.data;
+        });
       }
     },
     // 查看详情
     viewDetails: function (item) {
       for (let index = 0; index < this.bindHouse.length; index++) {
         if (item.houseId === this.bindHouse[index].houseId) {
-          this.curHouse = this.bindHouse[index]
+          this.curHouse = this.bindHouse[index];
         }
       }
       if (item.businessCategoryId === 1) {
@@ -149,7 +149,7 @@ export default {
               curHouse: this.curHouse,
               bindHouse: this.bindHouse
             }
-          })
+          });
         } else {
           this.$router.push({
             name: 'chargeForm',
@@ -159,7 +159,7 @@ export default {
               curHouse: this.curHouse,
               bindHouse: this.bindHouse
             }
-          })
+          });
         }
       } else if (item.businessCategoryId === 2) {
         // 供热报修
@@ -171,7 +171,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else if (item.businessCategoryId === 3) {
         // 供热投诉
         this.$router.push({
@@ -182,7 +182,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else if (item.businessCategoryId === 4) {
         // 停供申请
         this.$router.push({
@@ -193,11 +193,11 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

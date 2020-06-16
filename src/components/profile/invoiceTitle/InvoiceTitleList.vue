@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import invoiceTitleApi from '@/api/invoice-title'
+import constant from '@/assets/js/constant';
+import invoiceTitleApi from '@/api/invoice-title';
 
 export default {
   name: 'InvoiceTitleList',
@@ -52,56 +52,56 @@ export default {
       enterpriseFlag: true,
       enterpriseList: [],
       nonenterpriseList: []
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
     if (params.hasOwnProperty('enterpriseFlag')) {
-      this.enterpriseFlag = params.enterpriseFlag
+      this.enterpriseFlag = params.enterpriseFlag;
     }
-    this.initPage()
+    this.initPage();
   },
   mounted () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.replace({
         name: 'profile'
-      })
+      });
     },
     initPage: function () {
       // 企业
       invoiceTitleApi.getInvoiceTitleList(constant.invoice_title_type.business).then(result => {
         if (result.status === 1) {
-          this.enterpriseList = result.data
+          this.enterpriseList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       // 非企业
       invoiceTitleApi.getInvoiceTitleList(constant.invoice_title_type.nonbusiness).then(result => {
         if (result.status === 1) {
-          this.nonenterpriseList = result.data
+          this.nonenterpriseList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     setEnterpriseFlag: function (enterpriseFlag) {
-      this.enterpriseFlag = enterpriseFlag
+      this.enterpriseFlag = enterpriseFlag;
     },
     doAdd: function () {
       this.$router.push({
@@ -109,7 +109,7 @@ export default {
         params: {
           enterpriseFlag: this.enterpriseFlag
         }
-      })
+      });
     },
     doEdit: function (invoiceTitle) {
       this.$router.push({
@@ -118,10 +118,10 @@ export default {
           enterpriseFlag: this.enterpriseFlag,
           invoiceTitle: invoiceTitle
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

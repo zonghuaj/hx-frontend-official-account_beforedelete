@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { deleteHouse, houseSave } from '@/api/house'
+import { deleteHouse, houseSave } from '@/api/house';
 
 export default {
   name: 'EditHouse',
@@ -89,61 +89,61 @@ export default {
       houseId: null,
       house: {},
       isDefault: false
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.house = params.house
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.house = params.house;
     if (this.house.isDefault === 1) {
-      this.isDefault = true
+      this.isDefault = true;
     } else {
-      this.isDefault = false
+      this.isDefault = false;
     }
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       this.$router.push({
         name: 'houseList',
         params: {
           label: this.label,
           houseId: this.houseId
         }
-      })
+      });
     },
     doSave: function () {
-      let reg = /^.{1,5}$/
+      let reg = /^.{1,5}$/;
       if (reg.test(this.house.relationLabel)) {
         this.$toast.loading({
           duration: 0,
           forbidClick: true,
           message: '保存中...'
-        })
+        });
         let params = {
           relationLabel: this.house.relationLabel,
           contact: this.house.contact,
           telephone: this.house.telephone,
           isDefault: this.isDefault ? 1 : 0
-        }
+        };
         houseSave(this.house.bindId, params).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -151,13 +151,13 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       } else {
-        this.$toast('房屋标签最少1个字最多5个字')
+        this.$toast('房屋标签最少1个字最多5个字');
       }
     },
     doDelete: function () {
@@ -168,9 +168,9 @@ export default {
           duration: 0,
           forbidClick: true,
           message: '删除中...'
-        })
+        });
         deleteHouse(this.house.bindId).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -178,18 +178,18 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
-      })
+        });
+      });
     },
     setLabel: function (label) {
-      this.house.relationLabel = label
+      this.house.relationLabel = label;
     }
   }
-}
+};
 </script>
 
 <style scoped>

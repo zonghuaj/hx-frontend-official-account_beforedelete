@@ -65,9 +65,9 @@
 </template>
 
 <script>
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import profileApi from '@/api/profile'
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import profileApi from '@/api/profile';
 
 export default {
   name: 'Profile',
@@ -77,28 +77,28 @@ export default {
     return {
       user: {},
       notice: {}
-    }
+    };
   },
   beforeMount: function () {
-    this.initPage()
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       JSSDKLoader().then(wx => {
-        let url = location.href.split('#')[0]
+        let url = location.href.split('#')[0];
         let params = {
           url: url
-        }
+        };
         wxApi.getSignature(params).then(result => {
           if (result.status === 1) {
             wx.config({
@@ -108,49 +108,49 @@ export default {
               nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
               signature: result.data.signature, // 必填，签名
               jsApiList: ['closeWindow'] // 必填，需要使用的JS接口列表
-            })
+            });
             wx.ready(function () {
-              wx.closeWindow()
-            })
+              wx.closeWindow();
+            });
             wx.error(function (res) {
-              alert(JSON.stringify(res))
-            })
+              alert(JSON.stringify(res));
+            });
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     initPage: function () {
       profileApi.getUser().then(result => {
         if (result.status === 1) {
-          let user = result.data
+          let user = result.data;
           // 头像
           if (!user.headImgUrl) {
-            user.headImgUrl = require('@/assets/icon/touxiang.png')
+            user.headImgUrl = require('@/assets/icon/touxiang.png');
           }
           // 关注日期
           if (user.subscribedTime) {
-            user.subscribedDate = user.subscribedTime.substring(0, 10)
+            user.subscribedDate = user.subscribedTime.substring(0, 10);
           }
-          this.user = user
+          this.user = user;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       profileApi.getNotice().then(result => {
         if (result.status === 1) {
-          this.notice = result.data
+          this.notice = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     // 待办业务
     goOrderList: function () {
       this.$router.push({
         name: 'orderList'
-      })
+      });
     },
     // 完结业务
     goHistoryOrderList: function () {
@@ -159,7 +159,7 @@ export default {
         query: {
           label: 'historyOrderList'
         }
-      })
+      });
     },
     // 房屋列表
     goHouseList: function () {
@@ -168,7 +168,7 @@ export default {
         query: {
           label: 'houseList'
         }
-      })
+      });
     },
     // 发票查询
     goInvoiceList: function () {
@@ -177,19 +177,19 @@ export default {
         query: {
           label: 'invoiceList'
         }
-      })
+      });
     },
     // 发票抬头
     goInvoiceTitleList: function () {
       this.$router.push({
         name: 'invoiceTitleList'
-      })
+      });
     },
     unable: function () {
-      this.$toast('该功能正在开发，敬请期待。')
+      this.$toast('该功能正在开发，敬请期待。');
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -68,9 +68,9 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import PreviewPhoto from '@/components/common/PreviewPhoto'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import PreviewPhoto from '@/components/common/PreviewPhoto';
+import orderApi from '@/api/order';
 
 export default {
   name: 'StopHeatingForm',
@@ -87,38 +87,38 @@ export default {
       showPreviewPhotoPopup: false,
       photo: null,
       deleteFlag: false
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.stopHeatingId = params.stopHeatingId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.stopHeatingId = params.stopHeatingId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       // 预览照片
       if (this.showPreviewPhotoPopup) {
-        this.showPreviewPhotoPopup = false
-        return
+        this.showPreviewPhotoPopup = false;
+        return;
       }
       this.$router.push({
         name: 'orderList',
@@ -127,16 +127,16 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     initPage: function () {
       orderApi.getStopHeating(this.stopHeatingId).then(result => {
         if (result.status === 1) {
-          this.record = result.data
+          this.record = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     doDelete: function () {
       this.$dialog.confirm({
@@ -146,9 +146,9 @@ export default {
           duration: 0,
           forbidClick: true,
           message: '申请取消中...'
-        })
+        });
         orderApi.deleteStopHeating(this.stopHeatingId).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.status === 1) {
             this.$dialog.alert({
               message: '您已取消停供申请'
@@ -160,56 +160,56 @@ export default {
                   curHouse: this.curHouse,
                   bindHouse: this.bindHouse
                 }
-              })
-            })
+              });
+            });
           } else {
             this.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
-      })
+        });
+      });
     },
     doUrge: function () {
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '催办中...'
-      })
+      });
       orderApi.urgeStopHeating(this.stopHeatingId).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
           this.$dialog.alert({
             message: '催办申请已提交'
           }).then(() => {
-            this.record.isUrge = 1
-          })
+            this.record.isUrge = 1;
+          });
         } else {
           this.$dialog.alert({
             message: result.data.message
-          })
+          });
         }
-      })
+      });
     },
     showPreviewPhoto: function (label) {
-      this.showPreviewPhotoPopup = true
+      this.showPreviewPhotoPopup = true;
       if (label === 'identityPhoto1') {
-        this.photo = this.record.identityPhoto1
+        this.photo = this.record.identityPhoto1;
       } else if (label === 'identityPhoto2') {
-        this.photo = this.record.identityPhoto2
+        this.photo = this.record.identityPhoto2;
       } else if (label === 'propertyPhoto1') {
-        this.photo = this.record.propertyPhoto1
+        this.photo = this.record.propertyPhoto1;
       } else if (label === 'propertyPhoto2') {
-        this.photo = this.record.propertyPhoto2
+        this.photo = this.record.propertyPhoto2;
       } else if (label === 'propertyPhoto3') {
-        this.photo = this.record.propertyPhoto3
+        this.photo = this.record.propertyPhoto3;
       }
     },
     hidePreviewPhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>

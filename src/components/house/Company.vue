@@ -59,9 +59,9 @@
 </template>
 
 <script>
-import HeadCard from '@/components/house/HeadCard'
-import constant from '@/assets/js/constant'
-import { getCompany, getSearchMethod } from '@/api/house'
+import HeadCard from '@/components/house/HeadCard';
+import constant from '@/assets/js/constant';
+import { getCompany, getSearchMethod } from '@/api/house';
 
 export default {
   name: 'Company',
@@ -77,24 +77,24 @@ export default {
       company: {},
       searchMethod: {},
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
+    this.label = params.label;
+    this.houseId = params.houseId;
     if (params.hasOwnProperty('company')) {
-      this.company = params.company
+      this.company = params.company;
     }
     if (params.hasOwnProperty('searchMethod')) {
-      this.searchMethod = params.searchMethod
+      this.searchMethod = params.searchMethod;
     }
-    this.initPage()
+    this.initPage();
   },
   mounted: function () {
   },
@@ -108,34 +108,34 @@ export default {
           company: this.company,
           searchMethod: this.searchMethod
         }
-      })
+      });
     },
     initPage: function () {
       getCompany().then(result => {
         if (result.data.status === 1) {
-          this.companyList = result.data.data
+          this.companyList = result.data.data;
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     },
     showCompany: function () {
-      this.showCompanyPopup = true
+      this.showCompanyPopup = true;
     },
     selectCompany: function (item) {
-      this.showCompanyPopup = false
+      this.showCompanyPopup = false;
       // 深拷贝
-      this.company = JSON.parse(JSON.stringify(item))
+      this.company = JSON.parse(JSON.stringify(item));
       getSearchMethod(this.company.companyId).then(result => {
         if (result.data.status === 1) {
-          this.searchMethod = result.data.data
+          this.searchMethod = result.data.data;
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

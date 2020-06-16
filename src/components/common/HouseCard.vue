@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import BindHouseGrid from '@/components/common/BindHouseGrid'
-import orderApi from '@/api/order'
-import chargeApi from '@/api/charge'
+import BindHouseGrid from '@/components/common/BindHouseGrid';
+import orderApi from '@/api/order';
+import chargeApi from '@/api/charge';
 
 export default {
   name: 'HouseCard',
@@ -38,7 +38,7 @@ export default {
     return {
       record: this.curHouse,
       showPopup: false
-    }
+    };
   },
   beforeMount: function () {
   },
@@ -46,46 +46,46 @@ export default {
   },
   methods: {
     switchHouse: function () {
-      this.showPopup = true
+      this.showPopup = true;
     },
     select: function (item) {
       // 供热交费
       if (this.source === 'editInvoice') {
         chargeApi.getPaymentCharge(item.houseId).then(result => {
           if (result.status === 1) {
-            this.showPopup = false
-            this.record = item
-            this.$emit('switch', item)
+            this.showPopup = false;
+            this.record = item;
+            this.$emit('switch', item);
           } else {
             this.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
+        });
       } else if (this.source === 'addStopHeating') {
         orderApi.verifyStopHeating(item.houseId).then(result => {
           if (result.status === 1) {
-            let other = result.data
-            this.showPopup = false
-            this.record = item
-            this.$emit('switch', item, other)
+            let other = result.data;
+            this.showPopup = false;
+            this.record = item;
+            this.$emit('switch', item, other);
           } else {
             this.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
+        });
       } else {
-        this.showPopup = false
-        this.record = item
-        this.$emit('switch', item)
+        this.showPopup = false;
+        this.record = item;
+        this.$emit('switch', item);
       }
     },
     hidePopup: function () {
-      this.showPopup = false
+      this.showPopup = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>

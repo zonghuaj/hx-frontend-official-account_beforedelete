@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import serviceApi from '@/api/service.js'
+import HouseCard from '@/components/common/HouseCard';
+import serviceApi from '@/api/service.js';
 
 export default {
   name: 'MyMaintenance',
@@ -51,52 +51,52 @@ export default {
       curHouse: {},
       bindHouse: [],
       outlets: null
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'serviceHall',
         params: {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     switchHouse: function (house) {
-      this.curHouse = house
-      this.outlets = null
-      this.initPage()
+      this.curHouse = house;
+      this.outlets = null;
+      this.initPage();
     },
     initPage: function () {
       serviceApi.getHouseMaintenanceList(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          this.outlets = result.data
+          this.outlets = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     goMaintenanceList: function () {
       this.$router.push({
@@ -105,7 +105,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     goTimeArea: function () {
       this.$router.push({
@@ -116,7 +116,7 @@ export default {
           bindHouse: this.bindHouse,
           outlets: this.outlets
         }
-      })
+      });
     },
     locate: function () {
       this.$router.push({
@@ -126,10 +126,10 @@ export default {
           bindHouse: this.bindHouse,
           outlets: this.outlets
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

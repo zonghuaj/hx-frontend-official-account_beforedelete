@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import orderApi from '@/api/order';
 
 export default {
   name: 'HistoryOrderList',
@@ -81,28 +81,28 @@ export default {
       curHouse: {},
       bindHouse: [],
       record: {}
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     nav: function (routerName) {
@@ -113,10 +113,10 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       if (this.source === 'serviceHall') {
         this.$router.push({
           name: 'serviceHall',
@@ -124,7 +124,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else {
         if (this.bindHouse[0].isDefault === 0 && this.bindHouse.length > 1) {
           this.$router.push({
@@ -132,36 +132,36 @@ export default {
             query: {
               label: 'historyOrderList'
             }
-          })
+          });
         } else {
           this.$router.push({
             name: 'profile'
-          })
+          });
         }
       }
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.record = {}
-      this.initPage()
+      this.curHouse = house;
+      this.record = {};
+      this.initPage();
     },
     initPage: function () {
       orderApi.getBusinessCategory(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          this.record = result.data
+          this.record = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     unable: function () {
-      this.$toast('功能尚未开放')
+      this.$toast('功能尚未开放');
     }
   }
-}
+};
 </script>
 
 <style scoped>

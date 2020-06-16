@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import HeadCard from '@/components/house/HeadCard'
-import DefaultHouseReminder from '@/components/common/DefaultHouseReminder'
-import baseApi from '@/api/base'
-import orderApi from '@/api/order'
-import chargeApi from '@/api/charge'
-import { houseBind } from '@/api/house'
+import HeadCard from '@/components/house/HeadCard';
+import DefaultHouseReminder from '@/components/common/DefaultHouseReminder';
+import baseApi from '@/api/base';
+import orderApi from '@/api/order';
+import chargeApi from '@/api/charge';
+import { houseBind } from '@/api/house';
 
 export default {
   name: 'HouseList',
@@ -64,44 +64,44 @@ export default {
       oneFlag: false,
       house: {},
       showPopup: false
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.initPage()
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.initPage();
   },
   mounted () {
   },
   methods: {
     initPage: function () {
       if (this.label === 'houseList') {
-        this.title = '房屋列表'
+        this.title = '房屋列表';
       }
       houseBind().then((res) => {
-        this.houseList = res.data.data
+        this.houseList = res.data.data;
         for (let index = 0; index < this.houseList.length; index++) {
           if (this.houseList[index].relationLabel) {
-            let relationLabel = this.houseList[index].relationLabel.substring(0, 2)
+            let relationLabel = this.houseList[index].relationLabel.substring(0, 2);
             if (relationLabel.length === 1) {
-              this.houseList[index].one = relationLabel
+              this.houseList[index].one = relationLabel;
             } else if (relationLabel.length === 2) {
-              this.houseList[index].two = relationLabel
+              this.houseList[index].two = relationLabel;
             }
           }
         }
         if (this.houseList.length === 0) {
-          this.emptyFlag = true
+          this.emptyFlag = true;
         } else if (this.houseList.length === 1) {
-          this.oneFlag = true
+          this.oneFlag = true;
         }
-      })
+      });
     },
     // 添加房屋
     doAdd: function () {
@@ -111,7 +111,7 @@ export default {
           label: this.label,
           houseId: this.houseId
         }
-      })
+      });
     },
     // 编辑房屋
     doEdit: function (house) {
@@ -122,35 +122,35 @@ export default {
           houseId: this.houseId,
           house: house
         }
-      })
+      });
     },
     // 选择房屋
     doSelect: function (house) {
       if (this.label === 'houseList') {
         // ToDo
       } else {
-        this.house = house
+        this.house = house;
         baseApi.getReminder().then(result => {
           if (result.status === 1) {
             if (result.data > 0) {
-              this.showPopup = true
+              this.showPopup = true;
             } else {
-              this.doNext()
+              this.doNext();
             }
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
+        });
       }
     },
     confirm: function () {
-      this.showPopup = false
-      this.house.isDefault = 1
-      this.doNext()
+      this.showPopup = false;
+      this.house.isDefault = 1;
+      this.doNext();
     },
     close: function () {
-      this.showPopup = false
-      this.doNext()
+      this.showPopup = false;
+      this.doNext();
     },
     doNext: function () {
       if (this.label === 'serviceHall') {
@@ -160,7 +160,7 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'editInvoice') {
         chargeApi.getPaymentCharge(this.house.houseId).then(result => {
           if (result.status === 1) {
@@ -170,13 +170,13 @@ export default {
                 curHouse: this.house,
                 bindHouse: this.houseList
               }
-            })
+            });
           } else {
             this.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
+        });
       } else if (this.label === 'addRepair') {
         this.$router.push({
           name: 'addRepair',
@@ -184,7 +184,7 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'addComplain') {
         this.$router.push({
           name: 'addComplain',
@@ -192,11 +192,11 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'addStopHeating') {
         orderApi.verifyStopHeating(this.house.houseId).then(result => {
           if (result.status === 1) {
-            let other = result.data
+            let other = result.data;
             this.$router.push({
               name: 'addStopHeating',
               params: {
@@ -204,13 +204,13 @@ export default {
                 bindHouse: this.houseList,
                 other: other
               }
-            })
+            });
           } else {
             this.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
+        });
       } else if (this.label === 'myMaintenance') {
         this.$router.push({
           name: 'myMaintenance',
@@ -218,7 +218,7 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'invoiceList') {
         this.$router.push({
           name: 'invoiceList',
@@ -226,7 +226,7 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'historyOrderList') {
         this.$router.push({
           name: 'historyOrderList',
@@ -234,7 +234,7 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       } else if (this.label === 'switchHouse') {
         this.$router.push({
           name: 'serviceHall',
@@ -242,11 +242,11 @@ export default {
             curHouse: this.house,
             bindHouse: this.houseList
           }
-        })
+        });
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

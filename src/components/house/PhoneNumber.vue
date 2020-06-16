@@ -78,9 +78,9 @@
 </template>
 
 <script>
-import Slider from '@/components/common/Slider'
-import constant from '@/assets/js/constant'
-import { postVerifyCode, getMoblieHouse, modifyHouse } from '@/api/house'
+import Slider from '@/components/common/Slider';
+import constant from '@/assets/js/constant';
+import { postVerifyCode, getMoblieHouse, modifyHouse } from '@/api/house';
 
 export default {
   name: 'PhoneNumber',
@@ -103,117 +103,117 @@ export default {
       isDefault: false,
       activeName: null,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.company = params.company
-    this.searchMethod = params.searchMethod
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.company = params.company;
+    this.searchMethod = params.searchMethod;
   },
   mounted: function () {
   },
   methods: {
     show: function () {
       if (this.time > 0) {
-        return
+        return;
       }
       if (!this.mobile) {
-        this.$toast('请输入预留手机号')
-        return
+        this.$toast('请输入预留手机号');
+        return;
       }
-      var reg = /^[1][3,4,5,7,8][0-9]{9}$/
+      var reg = /^[1][3,4,5,7,8][0-9]{9}$/;
       if (!reg.test(this.mobile)) {
-        this.$toast('预留手机号格式不正确')
-        return
+        this.$toast('预留手机号格式不正确');
+        return;
       }
-      this.showPopup = true
+      this.showPopup = true;
     },
     hide: function (status) {
       if (status === 'success') {
-        this.showPopup = false
-        this.time = 60
-        this.timer()
+        this.showPopup = false;
+        this.time = 60;
+        this.timer();
         let params = {
           mobile: this.mobile
-        }
+        };
         postVerifyCode(params).then(result => {
           if (result.data.status === 1) {
-            console.log('发送验证码：' + this.mobile)
+            console.log('发送验证码：' + this.mobile);
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       }
     },
     timer: function () {
       if (this.time > 0) {
-        this.time--
-        this.yzm = this.time + 's'
-        setTimeout(this.timer, 1000)
+        this.time--;
+        this.yzm = this.time + 's';
+        setTimeout(this.timer, 1000);
       } else {
-        this.yzm = '发送验证码'
+        this.yzm = '发送验证码';
       }
     },
     doSearch: function () {
       if (!this.mobile) {
-        this.$toast('请输入预留手机号')
-        return
+        this.$toast('请输入预留手机号');
+        return;
       }
       if (!this.verifyCode) {
-        this.$toast('请输入手机验证码')
-        return
+        this.$toast('请输入手机验证码');
+        return;
       }
-      this.total = 0
-      this.houseList = []
-      this.isDefault = false
-      this.activeName = null
+      this.total = 0;
+      this.houseList = [];
+      this.isDefault = false;
+      this.activeName = null;
       let params = {
         companyId: this.company.companyId,
         mobile: this.mobile,
         verifyCode: this.verifyCode
-      }
+      };
       getMoblieHouse(params).then(result => {
         if (result.data.status === 1) {
-          let houseList = result.data.data
+          let houseList = result.data.data;
           for (let index = 0; index < houseList.length; index++) {
-            let maskCustomerName = houseList[index].maskCustomerName
+            let maskCustomerName = houseList[index].maskCustomerName;
             if (maskCustomerName && maskCustomerName !== '无') {
-              houseList[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1)
+              houseList[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1);
             } else {
-              houseList[index].relationLabel = '我家'
+              houseList[index].relationLabel = '我家';
             }
           }
-          this.total = houseList.length
-          this.houseList = houseList
+          this.total = houseList.length;
+          this.houseList = houseList;
           if (this.houseList.length > 0) {
-            this.activeName = this.houseList[0].houseId
+            this.activeName = this.houseList[0].houseId;
           }
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     },
     doSave: function (item) {
-      let reg = /^.{1,5}$/
+      let reg = /^.{1,5}$/;
       if (reg.test(item.relationLabel)) {
         this.$toast.loading({
           duration: 0,
           forbidClick: true,
           message: '保存中...'
-        })
+        });
         let params = {
           relationLabel: item.relationLabel,
           isDefault: this.isDefault ? 1 : 0
-        }
+        };
         modifyHouse(item.houseId, 5, params).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -221,20 +221,20 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       } else {
-        this.$toast('房屋标签最少1个字最多5个字')
+        this.$toast('房屋标签最少1个字最多5个字');
       }
     },
     setLabel: function (item, label) {
-      item.relationLabel = label
+      item.relationLabel = label;
     }
   }
-}
+};
 </script>
 
 <style scoped>

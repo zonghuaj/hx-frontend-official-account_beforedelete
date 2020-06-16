@@ -100,10 +100,10 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import AMapLoader from '@/assets/js/AMap.js'
-import dictionaryApi from '@/api/dictionary'
-import serviceApi from '@/api/service.js'
+import constant from '@/assets/js/constant';
+import AMapLoader from '@/assets/js/AMap.js';
+import dictionaryApi from '@/api/dictionary';
+import serviceApi from '@/api/service.js';
 
 export default {
   name: 'MaintenanceList',
@@ -131,107 +131,107 @@ export default {
       outletsList: [],
       outlets: null,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.outlets = params.outlets
-    this.initPage()
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.outlets = params.outlets;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'myMaintenance',
         params: {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     initPage: function () {
       // 供热公司
       serviceApi.getCompanyList().then(result => {
         if (result.status === 1) {
-          this.companyList = this.companyList.concat(result.data)
+          this.companyList = this.companyList.concat(result.data);
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       // 地区
       dictionaryApi.getAreaList().then(result => {
         if (result.status === 1) {
-          this.areaList = this.areaList.concat(result.data)
+          this.areaList = this.areaList.concat(result.data);
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       // 高德地图
       AMapLoader().then(AMap => {
         this.amap = new AMap.Map('amapDiv', {
           center: [123.34586, 41.762168],
           zoom: 13
-        })
+        });
         if (this.outlets) {
-          this.locate(this.outlets)
+          this.locate(this.outlets);
         }
-      })
-      this.getOutletsList()
+      });
+      this.getOutletsList();
     },
     getOutletsList: function () {
       let params = {
         typeId: 2,
         companyId: this.company.companyId,
         areaId: this.area.id
-      }
+      };
       serviceApi.getOutletsList(params).then(result => {
         if (result.status === 1) {
-          this.outletsList = result.data
+          this.outletsList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     setListModel: function (listModel) {
-      this.listModel = listModel
+      this.listModel = listModel;
     },
     showCompany: function () {
       if (this.companyList.length > 0) {
-        this.showCompanyPopup = true
+        this.showCompanyPopup = true;
       }
     },
     selectCompany: function (item) {
-      this.showCompanyPopup = false
+      this.showCompanyPopup = false;
       // 深拷贝
-      this.company = JSON.parse(JSON.stringify(item))
-      this.getOutletsList()
+      this.company = JSON.parse(JSON.stringify(item));
+      this.getOutletsList();
     },
     showArea: function () {
       if (this.areaList.length > 0) {
-        this.showAreaPopup = true
+        this.showAreaPopup = true;
       }
     },
     selectArea: function (item) {
-      this.showAreaPopup = false
+      this.showAreaPopup = false;
       // 深拷贝
-      this.area = JSON.parse(JSON.stringify(item))
-      this.getOutletsList()
+      this.area = JSON.parse(JSON.stringify(item));
+      this.getOutletsList();
     },
     goTimeArea: function (item) {
       this.$router.push({
@@ -242,23 +242,23 @@ export default {
           bindHouse: this.bindHouse,
           outlets: item
         }
-      })
+      });
     },
     locate: function (item) {
-      this.outlets = item
-      this.setListModel(false)
+      this.outlets = item;
+      this.setListModel(false);
       let marker = new window.AMap.Marker({
         position: new window.AMap.LngLat(this.outlets.longitude, this.outlets.latitude),
         title: this.outlets.outletsName
-      })
-      this.amap.clearMap()
-      this.amap.add(marker)
-      this.amap.panTo([this.outlets.longitude, this.outlets.latitude])
+      });
+      this.amap.clearMap();
+      this.amap.add(marker);
+      this.amap.panTo([this.outlets.longitude, this.outlets.latitude]);
     },
     navigate: function (item) {
     }
   }
-}
+};
 </script>
 
 <style scoped>

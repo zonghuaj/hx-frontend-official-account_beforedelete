@@ -1,15 +1,15 @@
 /** axios封装
  * 请求拦截、相应拦截、错误统一处理
  */
-import axios from 'axios'
+import axios from 'axios';
 // import QS from 'qs'
-import { Toast } from 'vant'
+import { Toast } from 'vant';
 
 // 请求超时时间
-axios.defaults.timeout = 90000
+axios.defaults.timeout = 90000;
 
 // post请求头
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 // axios.defaults.headers.uid = 1
 
 // 请求拦截器
@@ -19,19 +19,19 @@ axios.interceptors.request.use(
     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
     // const token = store.state.token
     //  token && (config.headers.Authorization = token)
-    return config
+    return config;
   },
   error => {
-    return Promise.error(error)
-  })
+    return Promise.error(error);
+  });
 
 // 响应拦截器
 axios.interceptors.response.use(
   response => {
     if (response.status === 200) {
-      return Promise.resolve(response)
+      return Promise.resolve(response);
     } else {
-      return Promise.reject(response)
+      return Promise.reject(response);
     }
   },
   // 服务器状态码不是200的情况
@@ -47,16 +47,16 @@ axios.interceptors.response.use(
             path: '/login',
             // eslint-disable-next-line no-undef
             query: { redirect: router.currentRoute.fullPath }
-          })
-          break
+          });
+          break;
         // 403 token过期
         // 登录过期对用户进行提示
         // 清除本地token和清空vuex中token对象
         // 跳转登录页面
         case 403:
-          Toast('登录过期，请重新登录')
+          Toast('登录过期，请重新登录');
           // 清除token
-          localStorage.removeItem('token')
+          localStorage.removeItem('token');
           // store.commit('loginSuccess', null)
           // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
           setTimeout(() => {
@@ -67,21 +67,21 @@ axios.interceptors.response.use(
                 // eslint-disable-next-line no-undef
                 redirect: router.currentRoute.fullPath
               }
-            })
-          }, 1000)
-          break
+            });
+          }, 1000);
+          break;
         // 404请求不存在
         case 404:
-          Toast('网络请求不存在')
-          break
+          Toast('网络请求不存在');
+          break;
         // 其他错误，直接抛出错误提示
         default:
-          Toast(error.response.statusText)
+          Toast(error.response.statusText);
       }
-      return Promise.reject(error.response)
+      return Promise.reject(error.response);
     }
   }
-)
+);
 
 /**
  * get方法，对应get请求
@@ -94,12 +94,12 @@ export function get (url, params) {
       params: params
     })
       .then(res => {
-        resolve(res.data)
+        resolve(res.data);
       })
       .catch(err => {
-        reject(err.data)
-      })
-  })
+        reject(err.data);
+      });
+  });
 }
 
 /**
@@ -111,14 +111,14 @@ export function post (url, params) {
   return new Promise((resolve, reject) => {
     axios.post(url, params)
       .then(res => {
-        let result = res
-        result.success = true
-        resolve(result)
+        let result = res;
+        result.success = true;
+        resolve(result);
       })
       .catch(err => {
-        reject(err.data)
-      })
-  })
+        reject(err.data);
+      });
+  });
 }
 
 export function axiosGet (url, params) {
@@ -127,22 +127,22 @@ export function axiosGet (url, params) {
       params: params
     })
       .then(response => {
-        resolve(response.data)
+        resolve(response.data);
       })
       .catch(error => {
-        reject(error)
-      })
-  })
+        reject(error);
+      });
+  });
 }
 
 export function axiosPost (url, params) {
   return new Promise((resolve, reject) => {
     axios.post(url, params)
       .then(response => {
-        resolve(response.data)
+        resolve(response.data);
       })
       .catch(error => {
-        reject(error)
-      })
-  })
+        reject(error);
+      });
+  });
 }

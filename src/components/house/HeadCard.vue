@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import { houseBind } from '@/api/house'
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import { houseBind } from '@/api/house';
 
 export default {
   name: 'HeadCard',
@@ -19,34 +19,34 @@ export default {
   ],
   data () {
     return {
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.company = params.company
-    this.searchMethod = params.searchMethod
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.company = params.company;
+    this.searchMethod = params.searchMethod;
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
-      let routeName = this.$route.name
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
+      let routeName = this.$route.name;
       if (routeName === 'card' || routeName === 'address' || routeName === 'blueAddress' || routeName === 'floorNumber' || routeName === 'phoneNumber') {
         this.$router.push({
           name: 'company',
@@ -56,7 +56,7 @@ export default {
             company: this.company,
             searchMethod: this.searchMethod
           }
-        })
+        });
       } else if (routeName === 'company') {
         this.$router.push({
           name: 'houseList',
@@ -64,21 +64,21 @@ export default {
             label: this.label,
             houseId: this.houseId
           }
-        })
+        });
       } else {
         if (this.label === 'historyOrderList' || this.label === 'houseList' || this.label === 'invoiceList') {
           this.$router.push({
             name: 'profile'
-          })
+          });
         } else if (this.label === 'switchHouse') {
           houseBind().then((res) => {
-            let houseList = res.data.data
+            let houseList = res.data.data;
             if (houseList.length === 0) {
               JSSDKLoader().then(wx => {
-                let url = location.href.split('#')[0]
+                let url = location.href.split('#')[0];
                 let params = {
                   url: url
-                }
+                };
                 wxApi.getSignature(params).then(result => {
                   if (result.status === 1) {
                     wx.config({
@@ -88,24 +88,24 @@ export default {
                       nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
                       signature: result.data.signature, // 必填，签名
                       jsApiList: ['closeWindow'] // 必填，需要使用的JS接口列表
-                    })
+                    });
                     wx.ready(function () {
-                      wx.closeWindow()
-                    })
+                      wx.closeWindow();
+                    });
                     wx.error(function (res) {
-                      alert(JSON.stringify(res))
-                    })
+                      alert(JSON.stringify(res));
+                    });
                   } else {
-                    this.$toast(result.data.message)
+                    this.$toast(result.data.message);
                   }
-                })
-              })
+                });
+              });
             } else {
-              let house = null
+              let house = null;
               for (let index = 0; index < houseList.length; index++) {
                 if (this.houseId === houseList[index].houseId) {
-                  house = houseList[index]
-                  break
+                  house = houseList[index];
+                  break;
                 }
               }
               if (house) {
@@ -115,18 +115,18 @@ export default {
                     curHouse: house,
                     bindHouse: houseList
                   }
-                })
+                });
               } else {
-                this.$toast('请选择房屋')
+                this.$toast('请选择房屋');
               }
             }
-          })
+          });
         } else if (this.label === 'editInvoice' || this.label === 'addRepair' || this.label === 'addComplain' || this.label === 'addStopHeating' || this.label === 'serviceHall') {
           JSSDKLoader().then(wx => {
-            let url = location.href.split('#')[0]
+            let url = location.href.split('#')[0];
             let params = {
               url: url
-            }
+            };
             wxApi.getSignature(params).then(result => {
               if (result.status === 1) {
                 wx.config({
@@ -136,23 +136,23 @@ export default {
                   nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
                   signature: result.data.signature, // 必填，签名
                   jsApiList: ['closeWindow'] // 必填，需要使用的JS接口列表
-                })
+                });
                 wx.ready(function () {
-                  wx.closeWindow()
-                })
+                  wx.closeWindow();
+                });
                 wx.error(function (res) {
-                  alert(JSON.stringify(res))
-                })
+                  alert(JSON.stringify(res));
+                });
               } else {
-                this.$toast(result.data.message)
+                this.$toast(result.data.message);
               }
-            })
-          })
+            });
+          });
         }
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

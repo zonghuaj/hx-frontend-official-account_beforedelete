@@ -113,8 +113,8 @@
 </template>
 
 <script>
-import chargeApi from '@/api/charge'
-import HouseCard from '@/components/common/HouseCard'
+import chargeApi from '@/api/charge';
+import HouseCard from '@/components/common/HouseCard';
 
 export default {
   name: 'ConfirmOrder',
@@ -138,40 +138,40 @@ export default {
       payParams: null,
       time: null,
       disabled: false
-    }
+    };
   },
   created: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.orderId = params.orderId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.isCurrentYear = params.isCurrentYear
-    this.isHouse = params.isHouse
-    this.paymentMethod = params.paymentMethod
-    this.previousPeriod = params.previousPeriod
-    this.payingPeriod = params.payingPeriod
-    this.previousYear = params.previousYear
-    this.validateNameFlag = params.validateNameFlag
-    this.initPage()
+    this.orderId = params.orderId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.isCurrentYear = params.isCurrentYear;
+    this.isHouse = params.isHouse;
+    this.paymentMethod = params.paymentMethod;
+    this.previousPeriod = params.previousPeriod;
+    this.payingPeriod = params.payingPeriod;
+    this.previousYear = params.previousYear;
+    this.validateNameFlag = params.validateNameFlag;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       if (this.orderId) {
         this.$router.replace({
           name: 'orderList',
@@ -180,7 +180,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else {
         this.$router.replace({
           name: 'editInvoice',
@@ -195,111 +195,111 @@ export default {
             previousYear: this.previousYear,
             validateNameFlag: this.validateNameFlag
           }
-        })
+        });
       }
     },
     showMoreField: function (record) {
-      record.showMoreFields = !record.showMoreFields
+      record.showMoreFields = !record.showMoreFields;
     },
     initPage: function () {
       if (this.orderId) {
         chargeApi.getOrderInfo(this.orderId).then(result => {
-          this.isCurrentYear = result.isCurrentYear
-          this.isHouse = result.isHouse
-          this.payingPeriod = result.payingPeriod
-          this.paymentMethodText = result.paymentMethodText
-          this.invoQty = result.invoQty
-          this.orderAmount = result.totalAmount
-          this.payParams = result.payParams
+          this.isCurrentYear = result.isCurrentYear;
+          this.isHouse = result.isHouse;
+          this.payingPeriod = result.payingPeriod;
+          this.paymentMethodText = result.paymentMethodText;
+          this.invoQty = result.invoQty;
+          this.orderAmount = result.totalAmount;
+          this.payParams = result.payParams;
           // 倒计时
-          this.countdown()
-        })
-        return
+          this.countdown();
+        });
+        return;
       }
 
-      let paymentMethod = this.paymentMethod
+      let paymentMethod = this.paymentMethod;
       if (paymentMethod === 'reference') {
         if (this.payingPeriod[0].visibility.selfPayCard) {
           if (this.payingPeriod[0].visibility.reimburseCard) {
-            paymentMethod = 'reimbursePart'
+            paymentMethod = 'reimbursePart';
           } else {
-            paymentMethod = 'selfPay'
+            paymentMethod = 'selfPay';
           }
         } else {
-          paymentMethod = 'reimburseAll'
+          paymentMethod = 'reimburseAll';
         }
       }
 
       if (paymentMethod === 'selfPay') {
-        let totalAmount = 0
+        let totalAmount = 0;
         for (let idx = 0; idx < this.payingPeriod.length; idx++) {
-          let period = this.payingPeriod[idx]
-          period.selfPay.chargeAmount = this.float.multiply(period.ceSubsidyPrice, period.selfPay.area)
-          period.amount = period.selfPay.chargeAmount
-          totalAmount = this.float.add(totalAmount, period.selfPay.chargeAmount)
+          let period = this.payingPeriod[idx];
+          period.selfPay.chargeAmount = this.float.multiply(period.ceSubsidyPrice, period.selfPay.area);
+          period.amount = period.selfPay.chargeAmount;
+          totalAmount = this.float.add(totalAmount, period.selfPay.chargeAmount);
         }
-        this.invoQty = this.payingPeriod.length
-        this.orderAmount = totalAmount
-        this.paymentMethodText = '全部自费'
+        this.invoQty = this.payingPeriod.length;
+        this.orderAmount = totalAmount;
+        this.paymentMethodText = '全部自费';
       } else if (paymentMethod === 'reimbursePart') {
-        let partQty = 0 // 报销发票数量
-        let selfQty = this.payingPeriod.length // 自费发票数量
-        let totalAmount = 0 // 订单总金额
+        let partQty = 0; // 报销发票数量
+        let selfQty = this.payingPeriod.length; // 自费发票数量
+        let totalAmount = 0; // 订单总金额
         for (let idx = 0; idx < this.payingPeriod.length; idx++) {
-          let period = this.payingPeriod[idx]
-          let periodAmount = 0
+          let period = this.payingPeriod[idx];
+          let periodAmount = 0;
           // 自费部分
-          period.selfPay.chargeAmount = this.float.multiply(period.ceSubsidyPrice, period.selfPay.area)
-          totalAmount = this.float.add(totalAmount, period.selfPay.chargeAmount)
-          periodAmount = this.float.add(periodAmount, period.selfPay.chargeAmount)
+          period.selfPay.chargeAmount = this.float.multiply(period.ceSubsidyPrice, period.selfPay.area);
+          totalAmount = this.float.add(totalAmount, period.selfPay.chargeAmount);
+          periodAmount = this.float.add(periodAmount, period.selfPay.chargeAmount);
           // 报销部分
-          let reimbursePartQty = period.reimbursePartArray.length
-          partQty += reimbursePartQty
+          let reimbursePartQty = period.reimbursePartArray.length;
+          partQty += reimbursePartQty;
           for (let i = 0; i < reimbursePartQty; i++) {
-            let reimbursePart = period.reimbursePartArray[i]
-            reimbursePart.chargeAmount = this.float.multiply(period.price, reimbursePart.area)
-            totalAmount = this.float.add(totalAmount, reimbursePart.chargeAmount)
-            periodAmount = this.float.add(periodAmount, reimbursePart.chargeAmount)
+            let reimbursePart = period.reimbursePartArray[i];
+            reimbursePart.chargeAmount = this.float.multiply(period.price, reimbursePart.area);
+            totalAmount = this.float.add(totalAmount, reimbursePart.chargeAmount);
+            periodAmount = this.float.add(periodAmount, reimbursePart.chargeAmount);
           }
-          period.amount = periodAmount
+          period.amount = periodAmount;
         }
-        this.invoQty = selfQty + partQty
-        this.orderAmount = totalAmount
-        this.paymentMethodText = '部分报销'
+        this.invoQty = selfQty + partQty;
+        this.orderAmount = totalAmount;
+        this.paymentMethodText = '部分报销';
       } else if (paymentMethod === 'reimburseAll') {
-        let partQty = 0 // 报销发票数量
-        let totalAmount = 0 // 订单总金额
+        let partQty = 0; // 报销发票数量
+        let totalAmount = 0; // 订单总金额
         for (let idx = 0; idx < this.payingPeriod.length; idx++) {
-          let period = this.payingPeriod[idx]
-          let periodAmount = 0
-          let reimbursePartQty = period.reimbursePartArray.length
-          partQty += reimbursePartQty
+          let period = this.payingPeriod[idx];
+          let periodAmount = 0;
+          let reimbursePartQty = period.reimbursePartArray.length;
+          partQty += reimbursePartQty;
           for (let i = 0; i < reimbursePartQty; i++) {
-            let reimbursePart = period.reimbursePartArray[i]
+            let reimbursePart = period.reimbursePartArray[i];
             if (period.isPartOwe === 1) {
-              reimbursePart.chargeAmount = period.totalAccount
+              reimbursePart.chargeAmount = period.totalAccount;
             } else {
-              reimbursePart.chargeAmount = this.float.multiply(period.price, reimbursePart.area)
+              reimbursePart.chargeAmount = this.float.multiply(period.price, reimbursePart.area);
             }
-            totalAmount = this.float.add(totalAmount, reimbursePart.chargeAmount)
-            periodAmount = this.float.add(periodAmount, reimbursePart.chargeAmount)
+            totalAmount = this.float.add(totalAmount, reimbursePart.chargeAmount);
+            periodAmount = this.float.add(periodAmount, reimbursePart.chargeAmount);
           }
-          period.amount = periodAmount
+          period.amount = periodAmount;
         }
-        this.invoQty = partQty
-        this.orderAmount = totalAmount
-        this.paymentMethodText = '全部报销'
+        this.invoQty = partQty;
+        this.orderAmount = totalAmount;
+        this.paymentMethodText = '全部报销';
       }
     },
     dopay: function () {
-      let me = this
+      let me = this;
       if (me.disabled) {
-        return
+        return;
       }
-      me.disabled = true
+      me.disabled = true;
       setTimeout(function () {
-        me.disabled = false
-      }, 3000)
+        me.disabled = false;
+      }, 3000);
       if (me.orderId) {
         me.$router.replace({
           name: 'payOrder',
@@ -310,18 +310,18 @@ export default {
             curHouse: me.curHouse,
             bindHouse: me.bindHouse
           }
-        })
+        });
       } else {
-        let paymentMethod = this.paymentMethod
+        let paymentMethod = this.paymentMethod;
         if (paymentMethod === 'reference') {
           if (this.payingPeriod[0].visibility.selfPayCard) {
             if (this.payingPeriod[0].visibility.reimburseCard) {
-              paymentMethod = 'reimbursePart'
+              paymentMethod = 'reimbursePart';
             } else {
-              paymentMethod = 'selfPay'
+              paymentMethod = 'selfPay';
             }
           } else {
-            paymentMethod = 'reimburseAll'
+            paymentMethod = 'reimburseAll';
           }
         }
         chargeApi.saveOrder(me.curHouse.houseId, {
@@ -341,11 +341,11 @@ export default {
                 curHouse: me.curHouse,
                 bindHouse: me.bindHouse
               }
-            })
+            });
           } else {
-            me.$toast(result.data.message)
+            me.$toast(result.data.message);
           }
-        })
+        });
       }
     },
     doDelete: function () {
@@ -362,32 +362,32 @@ export default {
                 curHouse: this.curHouse,
                 bindHouse: this.bindHouse
               }
-            })
+            });
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     // 倒计时
     countdown: function () {
-      let createTimeStr = this.payParams.createTime
-      createTimeStr = createTimeStr.replace(/-/g, '/')
-      let createTime = new Date(createTimeStr)
-      createTime.setDate(createTime.getDate() + 1)
-      let second = Math.floor((createTime.getTime() - new Date().getTime()) / 1000)
+      let createTimeStr = this.payParams.createTime;
+      createTimeStr = createTimeStr.replace(/-/g, '/');
+      let createTime = new Date(createTimeStr);
+      createTime.setDate(createTime.getDate() + 1);
+      let second = Math.floor((createTime.getTime() - new Date().getTime()) / 1000);
       if (second > 0) {
-        let hour = Math.floor(second / 3600)
-        second %= 3600
-        let minute = Math.floor(second / 60)
-        this.time = (hour >= 10 ? hour : '0' + hour) + ':' + (minute >= 10 ? minute : '0' + minute)
-        setTimeout(this.countdown, 30 * 1000)
+        let hour = Math.floor(second / 3600);
+        second %= 3600;
+        let minute = Math.floor(second / 60);
+        this.time = (hour >= 10 ? hour : '0' + hour) + ':' + (minute >= 10 ? minute : '0' + minute);
+        setTimeout(this.countdown, 30 * 1000);
       } else {
-        this.time = '00:00'
+        this.time = '00:00';
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
+import HouseCard from '@/components/common/HouseCard';
 
 export default {
   name: 'MobileMaintenance',
@@ -59,43 +59,43 @@ export default {
     return {
       curHouse: {},
       bindHouse: []
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
   },
   mounted () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'informationMaintenance',
         params: {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     switchHouse: function (item) {
-      this.curHouse = item
+      this.curHouse = item;
     }
   }
-}
+};
 </script>
 
 <style scoped>

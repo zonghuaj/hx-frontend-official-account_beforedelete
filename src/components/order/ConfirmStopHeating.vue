@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import orderApi from '@/api/order'
+import constant from '@/assets/js/constant';
+import orderApi from '@/api/order';
 
 export default {
   name: 'ConfirmStopHeating',
@@ -65,33 +65,33 @@ export default {
       record: {},
       checked: false,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.other = params.other
-    this.record = params.record
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.other = params.other;
+    this.record = params.record;
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       this.$router.push({
         name: 'addStopHeating',
         params: {
@@ -100,16 +100,16 @@ export default {
           other: this.other,
           record: this.record
         }
-      })
+      });
     },
     doSubmit: function () {
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '提交中...'
-      })
+      });
       orderApi.saveStopHeating(this.curHouse.houseId, this.record).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
           this.$dialog.alert({
             message: '您已成功提交停供申请，可在待办业务中继续查看。'
@@ -120,17 +120,17 @@ export default {
                 curHouse: this.curHouse,
                 bindHouse: this.bindHouse
               }
-            })
-          })
+            });
+          });
         } else {
           this.$dialog.alert({
             message: result.data.message
-          })
+          });
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

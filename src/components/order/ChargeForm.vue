@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import orderApi from '@/api/order';
 
 export default {
   name: 'ChargeForm',
@@ -107,35 +107,35 @@ export default {
       bindHouse: [],
       record: {},
       getInvoiceType: function (type) {
-        return type === 1 ? '自费' : '报销'
+        return type === 1 ? '自费' : '报销';
       }
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.orderId = params.orderId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.orderId = params.orderId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'orderList',
         params: {
@@ -143,26 +143,26 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     initPage: function () {
       orderApi.getPaymentOrder(this.orderId).then(result => {
         if (result.status === 1) {
-          let record = result.data
+          let record = result.data;
           // 发票数量
-          let invoiceQty = 0
+          let invoiceQty = 0;
           for (let index = 0; index < record.details.length; index++) {
-            invoiceQty += record.details[index].invoices.length
+            invoiceQty += record.details[index].invoices.length;
           }
-          record.invoiceQty = invoiceQty
-          this.record = record
+          record.invoiceQty = invoiceQty;
+          this.record = record;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     toggleInvoice: function (invoice) {
-      this.$set(invoice, 'expanded', !invoice.expanded)
+      this.$set(invoice, 'expanded', !invoice.expanded);
     },
     previewInvoice: function (invoice) {
       this.$router.push({
@@ -174,10 +174,10 @@ export default {
           bindHouse: this.bindHouse,
           invoice: invoice
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

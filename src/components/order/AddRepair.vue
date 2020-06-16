@@ -100,13 +100,13 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import PlayVideo from '@/components/common/PlayVideo'
-import PreviewPhoto from '@/components/common/PreviewPhoto'
-import constant from '@/assets/js/constant'
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import PlayVideo from '@/components/common/PlayVideo';
+import PreviewPhoto from '@/components/common/PreviewPhoto';
+import constant from '@/assets/js/constant';
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import orderApi from '@/api/order';
 
 export default {
   name: 'AddRepair',
@@ -146,53 +146,53 @@ export default {
       photo: null,
       deleteFlag: true,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.contact = this.curHouse.contact
-    this.mobile = this.curHouse.telephone
-    this.initPage()
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.contact = this.curHouse.contact;
+    this.mobile = this.curHouse.telephone;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       // 房屋卡片
       if (this.$refs.houseCard.showPopup) {
-        this.$refs.houseCard.showPopup = false
-        return
+        this.$refs.houseCard.showPopup = false;
+        return;
       }
       // 报修类别
       if (this.showCategoryPopup) {
-        this.showCategoryPopup = false
-        return
+        this.showCategoryPopup = false;
+        return;
       }
       // 播放视频
       if (this.showPlayVideoPopup) {
-        this.showPlayVideoPopup = false
-        return
+        this.showPlayVideoPopup = false;
+        return;
       }
       // 预览照片
       if (this.showPreviewPhotoPopup) {
-        this.showPreviewPhotoPopup = false
-        return
+        this.showPreviewPhotoPopup = false;
+        return;
       }
       this.$dialog.confirm({
         message: '您将放弃本次编辑内容，是否继续。'
@@ -203,35 +203,35 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
-      })
+        });
+      });
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.contact = this.curHouse.contact
-      this.mobile = this.curHouse.telephone
+      this.curHouse = house;
+      this.contact = this.curHouse.contact;
+      this.mobile = this.curHouse.telephone;
     },
     initPage: function () {
       orderApi.getComplaintTypeList(this.compliantCategoryId).then(result => {
         if (result.status === 1) {
-          this.categoryList = result.data
+          this.categoryList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
-      this.initWeChat()
+      });
+      this.initWeChat();
     },
     initWeChat: function () {
-      let me = this
+      let me = this;
       JSSDKLoader().then(wx => {
-        me.wx = wx
-        let url = location.href.split('#')[0]
+        me.wx = wx;
+        let url = location.href.split('#')[0];
         let params = {
           url: url
-        }
+        };
         wxApi.getSignature(params).then(result => {
           if (result.status === 1) {
             me.wx.config({
@@ -241,73 +241,73 @@ export default {
               nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
               signature: result.data.signature, // 必填，签名
               jsApiList: ['startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice'] // 必填，需要使用的JS接口列表
-            })
+            });
             me.wx.ready(function () {
               // 监听录音自动停止
               me.wx.onVoicePlayEnd({
                 success: function (res) {
-                  me.localId = res.localId
-                  me.recordFlag = false
-                  me.uploadVoice()
+                  me.localId = res.localId;
+                  me.recordFlag = false;
+                  me.uploadVoice();
                 }
-              })
+              });
               // 监听语音播放完毕
               me.wx.onVoicePlayEnd({
                 success: function (res) {
-                  me.localId = res.localId
-                  me.playFlag = false
+                  me.localId = res.localId;
+                  me.playFlag = false;
                 }
-              })
-            })
+              });
+            });
             me.wx.error(function (res) {
-              alert(JSON.stringify(res))
-            })
+              alert(JSON.stringify(res));
+            });
           } else {
-            me.$toast(result.data.message)
+            me.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     showCategory: function () {
-      this.showCategoryPopup = true
+      this.showCategoryPopup = true;
     },
     selectCategory: function (item) {
-      this.showCategoryPopup = false
+      this.showCategoryPopup = false;
       // 深拷贝
-      this.category = JSON.parse(JSON.stringify(item))
+      this.category = JSON.parse(JSON.stringify(item));
     },
     doSubmit: function () {
       if (!this.category.id) {
-        this.$toast('请选择报修类别')
-        return
+        this.$toast('请选择报修类别');
+        return;
       }
       if (!this.compliantContent) {
-        this.$toast('请输入报修内容')
-        return
+        this.$toast('请输入报修内容');
+        return;
       }
       if (!this.contact) {
-        this.$toast('请输入联系人')
-        return
+        this.$toast('请输入联系人');
+        return;
       }
       if (!this.mobile) {
-        this.$toast('请输入联系电话')
-        return
+        this.$toast('请输入联系电话');
+        return;
       } else {
-        let regex = /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/
+        let regex = /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/;
         if (!regex.test(this.mobile)) {
-          this.$toast('请输入有效的联系电话')
-          return
+          this.$toast('请输入有效的联系电话');
+          return;
         }
       }
       if (this.video && parseInt(this.video.duration) > 10) {
-        this.$toast('视频不能超过10s')
-        return
+        this.$toast('视频不能超过10s');
+        return;
       }
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '提交中...'
-      })
+      });
       let params = {
         category: this.compliantCategoryId,
         compliantTypeId: this.category.id,
@@ -319,9 +319,9 @@ export default {
         photo1: this.photo1,
         photo2: this.photo2,
         photo3: this.photo3
-      }
+      };
       orderApi.saveComplaint(this.curHouse.houseId, params).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
           this.$dialog.alert({
             message: '您已成功提交供热报修，可在待办业务中继续查看。'
@@ -332,123 +332,123 @@ export default {
                 curHouse: this.curHouse,
                 bindHouse: this.bindHouse
               }
-            })
-          })
+            });
+          });
         } else {
           this.$dialog.alert({
             message: result.data.message
-          })
+          });
         }
-      })
+      });
     },
     afterRead: function (file, detail) {
-      let me = this
+      let me = this;
       if (detail.name === 'video') {
-        me.video = file
-        let video = document.createElement('video')
-        video.setAttribute('src', file.content)
+        me.video = file;
+        let video = document.createElement('video');
+        video.setAttribute('src', file.content);
         video.ondurationchange = function () {
-          me.video.duration = this.duration
-        }
+          me.video.duration = this.duration;
+        };
       } else {
         // 压缩图片
         me.common.compressImage(file.content, {
           width: 750
         }).then(result => {
           if (detail.name === 'photo1') {
-            me.photo1 = result
+            me.photo1 = result;
           } else if (detail.name === 'photo2') {
-            me.photo2 = result
+            me.photo2 = result;
           } else if (detail.name === 'photo3') {
-            me.photo3 = result
+            me.photo3 = result;
           }
-        })
+        });
       }
     },
     // 开始录音
     startRecord: function () {
-      this.recordFlag = true
-      this.wx.startRecord()
+      this.recordFlag = true;
+      this.wx.startRecord();
     },
     // 停止录音
     stopRecord: function () {
-      let me = this
+      let me = this;
       me.wx.stopRecord({
         success: function (res) {
-          me.localId = res.localId
-          me.recordFlag = false
-          me.uploadVoice()
+          me.localId = res.localId;
+          me.recordFlag = false;
+          me.uploadVoice();
         }
-      })
+      });
     },
     // 播放语音
     playVoice: function () {
-      this.playFlag = true
+      this.playFlag = true;
       this.wx.playVoice({
         localId: this.localId
-      })
+      });
     },
     // 停止播放
     stopVoice: function () {
-      this.playFlag = false
+      this.playFlag = false;
       this.wx.stopVoice({
         localId: this.localId
-      })
+      });
     },
     // 上传语音
     uploadVoice: function () {
-      let me = this
+      let me = this;
       me.wx.uploadVoice({
         localId: me.localId,
         isShowProgressTips: 1,
         success: function (res) {
-          me.serverId = res.serverId
+          me.serverId = res.serverId;
         }
-      })
+      });
     },
     // 删除语音
     deleteVoice: function () {
-      this.localId = null
-      this.serverId = null
-      this.recordFlag = false
-      this.playFlag = false
+      this.localId = null;
+      this.serverId = null;
+      this.recordFlag = false;
+      this.playFlag = false;
     },
     showPlayVideo: function () {
-      this.showPlayVideoPopup = true
+      this.showPlayVideoPopup = true;
     },
     hidePlayVideo: function () {
-      this.showPlayVideoPopup = false
+      this.showPlayVideoPopup = false;
     },
     deleteVideo: function () {
-      this.showPlayVideoPopup = false
-      this.video = null
+      this.showPlayVideoPopup = false;
+      this.video = null;
     },
     showPreviewPhoto: function (label) {
-      this.showPreviewPhotoPopup = true
-      this.label = label
+      this.showPreviewPhotoPopup = true;
+      this.label = label;
       if (this.label === 'photo1') {
-        this.photo = this.photo1
+        this.photo = this.photo1;
       } else if (this.label === 'photo2') {
-        this.photo = this.photo2
+        this.photo = this.photo2;
       } else if (this.label === 'photo3') {
-        this.photo = this.photo3
+        this.photo = this.photo3;
       }
     },
     hidePreviewPhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
     },
     deletePhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
       if (this.label === 'photo1') {
-        this.photo1 = null
+        this.photo1 = null;
       } else if (this.label === 'photo2') {
-        this.photo2 = null
+        this.photo2 = null;
       } else if (this.label === 'photo3') {
-        this.photo3 = null
+        this.photo3 = null;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

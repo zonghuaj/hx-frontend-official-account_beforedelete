@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import { getAddressHouse, modifyHouse } from '@/api/house'
+import constant from '@/assets/js/constant';
+import { getAddressHouse, modifyHouse } from '@/api/house';
 
 export default {
   name: 'Address',
@@ -92,36 +92,36 @@ export default {
       loading: false,
       finished: false,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.company = params.company
-    this.searchMethod = params.searchMethod
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.company = params.company;
+    this.searchMethod = params.searchMethod;
   },
   mounted: function () {
   },
   methods: {
     doSearch: function () {
       if (!this.address) {
-        this.$toast('请输入房屋地址！')
-        return
+        this.$toast('请输入房屋地址！');
+        return;
       }
-      this.total = 0
-      this.houseList = []
-      this.isDefault = false
-      this.activeName = null
-      this.page = 1
-      this.loading = false
-      this.finished = false
-      this.getHouseList()
+      this.total = 0;
+      this.houseList = [];
+      this.isDefault = false;
+      this.activeName = null;
+      this.page = 1;
+      this.loading = false;
+      this.finished = false;
+      this.getHouseList();
     },
     getHouseList: function () {
       let params = {
@@ -129,44 +129,44 @@ export default {
         address: this.address,
         page: this.page++,
         size: 15
-      }
+      };
       getAddressHouse(params).then(result => {
         if (result.data.status === 1) {
-          this.total = result.data.data.total
-          let records = result.data.data.records
+          this.total = result.data.data.total;
+          let records = result.data.data.records;
           for (let index = 0; index < records.length; index++) {
-            let maskCustomerName = records[index].maskCustomerName
+            let maskCustomerName = records[index].maskCustomerName;
             if (maskCustomerName && maskCustomerName !== '无') {
-              records[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1)
+              records[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1);
             } else {
-              records[index].relationLabel = '我家'
+              records[index].relationLabel = '我家';
             }
           }
-          this.houseList = this.houseList.concat(records)
+          this.houseList = this.houseList.concat(records);
           if (!this.activeName) {
             if (this.houseList.length > 0) {
-              this.activeName = this.houseList[0].houseId
+              this.activeName = this.houseList[0].houseId;
             }
           }
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     },
     doSave: function (item) {
-      let reg = /^.{1,5}$/
+      let reg = /^.{1,5}$/;
       if (reg.test(item.relationLabel)) {
         this.$toast.loading({
           duration: 0,
           forbidClick: true,
           message: '保存中...'
-        })
+        });
         let params = {
           relationLabel: item.relationLabel,
           isDefault: this.isDefault ? 1 : 0
-        }
+        };
         modifyHouse(item.houseId, 2, params).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -174,30 +174,30 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       } else {
-        this.$toast('房屋标签最少1个字最多5个字')
+        this.$toast('房屋标签最少1个字最多5个字');
       }
     },
     setLabel: function (item, label) {
-      item.relationLabel = label
+      item.relationLabel = label;
     },
     onLoad: function () {
       setTimeout(() => {
-        this.loading = false
+        this.loading = false;
         if (this.houseList.length === this.total) {
-          this.finished = true
+          this.finished = true;
         } else {
-          this.getHouseList()
+          this.getHouseList();
         }
-      }, 500)
+      }, 500);
     }
   }
-}
+};
 </script>
 
 <style scoped>

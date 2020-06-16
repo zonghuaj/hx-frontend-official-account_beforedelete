@@ -1,21 +1,21 @@
-import { axiosGet, axiosPost } from '@/api/axios'
+import { axiosGet, axiosPost } from '@/api/axios';
 
 const getHouseMaintenanceList = houseId => {
-  return axiosGet('/business/' + houseId + '/repairnetwork')
-}
+  return axiosGet('/business/' + houseId + '/repairnetwork');
+};
 
 const getCompanyList = () => {
-  return axiosGet('/company')
-}
+  return axiosGet('/company');
+};
 
 const getOutletsList = params => {
-  return axiosPost('/business/outlets', params)
-}
+  return axiosPost('/business/outlets', params);
+};
 
 const serviceApi = {
   getHouseMaintenanceList: getHouseMaintenanceList,
   getCompanyList: getCompanyList,
   getOutletsList: getOutletsList
-}
+};
 
-export default serviceApi
+export default serviceApi;

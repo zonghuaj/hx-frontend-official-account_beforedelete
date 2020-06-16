@@ -102,10 +102,10 @@
 </template>
 
 <script>
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import orderApi from '@/api/order'
-import chargeApi from '@/api/charge'
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import orderApi from '@/api/order';
+import chargeApi from '@/api/charge';
 
 export default {
   name: 'ServiceHall',
@@ -114,35 +114,35 @@ export default {
     return {
       curHouse: {},
       bindHouse: []
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       JSSDKLoader().then(wx => {
-        let url = location.href.split('#')[0]
+        let url = location.href.split('#')[0];
         let params = {
           url: url
-        }
+        };
         wxApi.getSignature(params).then(result => {
           if (result.status === 1) {
             wx.config({
@@ -152,18 +152,18 @@ export default {
               nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
               signature: result.data.signature, // 必填，签名
               jsApiList: ['closeWindow'] // 必填，需要使用的JS接口列表
-            })
+            });
             wx.ready(function () {
-              wx.closeWindow()
-            })
+              wx.closeWindow();
+            });
             wx.error(function (res) {
-              alert(JSON.stringify(res))
-            })
+              alert(JSON.stringify(res));
+            });
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     goHouseList: function () {
       this.$router.push({
@@ -172,7 +172,7 @@ export default {
           label: 'switchHouse',
           houseId: this.curHouse.houseId
         }
-      })
+      });
     },
     // 供热交费
     goCharge: function () {
@@ -184,13 +184,13 @@ export default {
               curHouse: this.curHouse,
               bindHouse: this.bindHouse
             }
-          })
+          });
         } else {
           this.$dialog.alert({
             message: result.data.message
-          })
+          });
         }
-      })
+      });
     },
     // 供热报修
     goRepair: function () {
@@ -200,7 +200,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 供热投诉
     goComplain: function () {
@@ -210,13 +210,13 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 停供申请
     goStopHeating: function () {
       orderApi.verifyStopHeating(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          let other = result.data
+          let other = result.data;
           this.$router.push({
             name: 'addStopHeating',
             params: {
@@ -224,13 +224,13 @@ export default {
               bindHouse: this.bindHouse,
               other: other
             }
-          })
+          });
         } else {
           this.$dialog.alert({
             message: result.data.message
-          })
+          });
         }
-      })
+      });
     },
     // 发票查询
     goInvoiceList: function () {
@@ -241,7 +241,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 信息维护
     goInformation: function () {
@@ -251,7 +251,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 待办业务
     goOrderList: function () {
@@ -262,7 +262,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 完结业务
     goHistoryOrderList: function () {
@@ -273,7 +273,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 客服大厅
     goBusinessList: function () {
@@ -283,7 +283,7 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     // 维修网点
     goMyMaintenance: function () {
@@ -293,13 +293,13 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     unable: function () {
-      this.$toast('该功能正在开发，敬请期待。')
+      this.$toast('该功能正在开发，敬请期待。');
     }
   }
-}
+};
 </script>
 
 <style scoped>

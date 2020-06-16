@@ -27,21 +27,21 @@ export default {
   },
   data () {
     return {
-    }
+    };
   },
   created: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
   },
   methods: {
     nav: function (path) {
-      this.$router.push('/' + path)
+      this.$router.push('/' + path);
     },
     goBack: function () {
       this.$router.push({
@@ -50,10 +50,10 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

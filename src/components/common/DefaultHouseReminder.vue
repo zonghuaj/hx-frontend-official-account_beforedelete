@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import baseApi from '@/api/base'
+import baseApi from '@/api/base';
 
 export default {
   name: 'DefaultHouseReminder',
@@ -19,7 +19,7 @@ export default {
   ],
   data () {
     return {
-    }
+    };
   },
   beforeMount: function () {
   },
@@ -29,29 +29,29 @@ export default {
     doConfirm: function () {
       let params = {
         primary: 1
-      }
+      };
       baseApi.setDefaultHouse(this.house.houseId, this.house.bindId, params).then(result => {
         if (result.status === 1) {
-          this.$emit('confirm')
+          this.$emit('confirm');
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     doClose: function () {
-      this.$emit('close')
+      this.$emit('close');
     },
     doCancleReminder: function () {
       baseApi.cancelReminder().then(result => {
         if (result.status === 1) {
-          this.$emit('close')
+          this.$emit('close');
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

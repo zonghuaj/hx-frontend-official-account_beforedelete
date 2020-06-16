@@ -1,5 +1,5 @@
 export const mixin = {
-  data() {
+  data () {
     return {};
   },
   computed: {},

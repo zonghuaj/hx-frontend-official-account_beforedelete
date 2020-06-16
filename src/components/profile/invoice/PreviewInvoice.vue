@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { ImagePreview } from 'vant'
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import invoiceApi from '@/api/invoice'
+import { ImagePreview } from 'vant';
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import invoiceApi from '@/api/invoice';
 
 export default {
   name: 'PreviewInvoice',
@@ -48,40 +48,40 @@ export default {
       showYX: false,
       // 图片预览
       imagePreview: null
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.orderId = params.orderId
-    this.detailId = params.detailId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.invoice = params.invoice
-    this.initWeChat()
+    this.orderId = params.orderId;
+    this.detailId = params.detailId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.invoice = params.invoice;
+    this.initWeChat();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       // 图片预览
       if (this.imagePreview) {
-        this.imagePreview.close()
-        return
+        this.imagePreview.close();
+        return;
       }
       if (this.orderId) {
         // 待办业务-供热交费-供热交费详情
@@ -93,7 +93,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else if (this.detailId) {
         // 完结业务-供热交费-供热交费详情
         this.$router.push({
@@ -104,7 +104,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else {
         // 发票查询
         this.$router.push({
@@ -114,17 +114,17 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       }
     },
     initWeChat: function () {
-      let me = this
+      let me = this;
       JSSDKLoader().then(wx => {
-        me.wx = wx
-        let url = location.href.split('#')[0]
+        me.wx = wx;
+        let url = location.href.split('#')[0];
         let params = {
           url: url
-        }
+        };
         wxApi.getSignature(params).then(result => {
           if (result.status === 1) {
             me.wx.config({
@@ -134,7 +134,7 @@ export default {
               nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
               signature: result.data.signature, // 必填，签名
               jsApiList: ['updateAppMessageShareData'] // 必填，需要使用的JS接口列表
-            })
+            });
             me.wx.ready(function () {
               // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
               me.wx.updateAppMessageShareData({
@@ -146,73 +146,73 @@ export default {
                   // 设置成功
                 },
                 fail: function (res) {
-                  alert(JSON.stringify(res))
+                  alert(JSON.stringify(res));
                 }
-              })
-            })
+              });
+            });
             me.wx.error(function (res) {
-              alert(JSON.stringify(res))
-            })
+              alert(JSON.stringify(res));
+            });
           } else {
-            me.$toast(result.data.message)
+            me.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     // 图片预览
     doPreview: function () {
-      let me = this
+      let me = this;
       me.imagePreview = ImagePreview({
         images: [
           me.invoice.previewUrl
         ],
         closeOnPopstate: true,
         onClose () {
-          me.imagePreview = null
+          me.imagePreview = null;
         }
-      })
+      });
     },
     doShowWXYX: function () {
-      this.showWXYX = true
+      this.showWXYX = true;
     },
     doShare: function () {
       this.$dialog.alert({
         message: '请点击右上角“...”打开微信菜单，然后点击“发送给朋友”'
-      })
+      });
     },
     doShowYX: function (item) {
-      this.showYX = true
+      this.showYX = true;
     },
     doSend: function () {
-      let regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+      let regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
       if (!this.receiver) {
-        this.$toast('请输入收件人！')
-        return
+        this.$toast('请输入收件人！');
+        return;
       } else if (!regEmail.test(this.receiver)) {
-        this.$toast('请输入有效的邮箱！')
-        return
+        this.$toast('请输入有效的邮箱！');
+        return;
       }
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '发送中...'
-      })
+      });
       let params = {
         receiver: this.receiver
-      }
+      };
       invoiceApi.sendInvoice(this.invoice.poInvoiceId, params).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
           this.$dialog.alert({
             message: '发送发票成功'
-          })
+          });
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import InvoiceTitleFormPopup from '@/components/profile/invoiceTitle/InvoiceTitleFormPopup'
-import constant from '@/assets/js/constant'
-import invoiceTitleApi from '@/api/invoice-title'
+import InvoiceTitleFormPopup from '@/components/profile/invoiceTitle/InvoiceTitleFormPopup';
+import constant from '@/assets/js/constant';
+import invoiceTitleApi from '@/api/invoice-title';
 
 export default {
   name: 'InvoiceTitleListPopup',
@@ -62,59 +62,59 @@ export default {
       nonenterpriseList: [],
       invoiceTitle: null,
       showInvoiceTitleForm: false
-    }
+    };
   },
   beforeMount: function () {
-    this.enterpriseFlag = this.invoiceTitleType === constant.invoice_title_type.business
-    this.initPage()
+    this.enterpriseFlag = this.invoiceTitleType === constant.invoice_title_type.business;
+    this.initPage();
   },
   mounted: function () {
   },
   methods: {
     goBack: function () {
-      this.$emit('goBack')
+      this.$emit('goBack');
     },
     initPage: function () {
       // 企业
       invoiceTitleApi.getInvoiceTitleList(constant.invoice_title_type.business).then(result => {
         if (result.status === 1) {
-          this.enterpriseList = result.data
+          this.enterpriseList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       // 非企业
       invoiceTitleApi.getInvoiceTitleList(constant.invoice_title_type.nonbusiness).then(result => {
         if (result.status === 1) {
-          this.nonenterpriseList = result.data
+          this.nonenterpriseList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     setEnterpriseFlag: function (enterpriseFlag) {
-      this.enterpriseFlag = enterpriseFlag
+      this.enterpriseFlag = enterpriseFlag;
     },
     doSelect: function (invoiceTitle) {
-      this.$emit('select', invoiceTitle)
+      this.$emit('select', invoiceTitle);
     },
     doAdd: function () {
-      this.showInvoiceTitleForm = true
-      this.invoiceTitle = null
+      this.showInvoiceTitleForm = true;
+      this.invoiceTitle = null;
     },
     doEdit: function (invoiceTitle) {
-      this.showInvoiceTitleForm = true
-      this.invoiceTitle = invoiceTitle
+      this.showInvoiceTitleForm = true;
+      this.invoiceTitle = invoiceTitle;
     },
     doConfirm: function () {
-      this.showInvoiceTitleForm = false
-      this.initPage()
+      this.showInvoiceTitleForm = false;
+      this.initPage();
     },
     doHide: function () {
-      this.showInvoiceTitleForm = false
+      this.showInvoiceTitleForm = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>

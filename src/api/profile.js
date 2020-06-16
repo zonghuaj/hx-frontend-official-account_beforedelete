@@ -1,8 +1,8 @@
-import { axiosGet } from '@/api/axios'
+import { axiosGet } from '@/api/axios';
 
 const getUser = () => {
-  return axiosGet('/puser')
-}
+  return axiosGet('/puser');
+};
 
 const getNotice = () => {
   // 测试数据
@@ -15,14 +15,14 @@ const getNotice = () => {
         // 系统通知
         system: 100
       }
-    }
-    resolve(result)
-  })
-}
+    };
+    resolve(result);
+  });
+};
 
 const profileApi = {
   getUser: getUser,
   getNotice: getNotice
-}
+};
 
-export default profileApi
+export default profileApi;

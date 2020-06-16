@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import invoiceTitleApi from '@/api/invoice-title'
+import constant from '@/assets/js/constant';
+import invoiceTitleApi from '@/api/invoice-title';
 
 export default {
   name: 'InvoiceTitleFormPopup',
@@ -76,50 +76,50 @@ export default {
       record: {},
       expanded: false,
       getInvoiceTitleType: function () {
-        return this.enterpriseFlag ? '企业' : '非企业'
+        return this.enterpriseFlag ? '企业' : '非企业';
       }
-    }
+    };
   },
   beforeMount: function () {
     if (this.invoiceTitle) {
-      this.record = this.invoiceTitle
+      this.record = this.invoiceTitle;
     }
   },
   mounted: function () {
   },
   methods: {
     goBack: function () {
-      this.$emit('goBack')
+      this.$emit('goBack');
     },
     doSave: function () {
       if (!this.record.pTitle) {
-        this.$toast('请输入发票抬头！')
-        return
+        this.$toast('请输入发票抬头！');
+        return;
       }
       if (this.enterpriseFlag) {
-        let reg = /^[0-9a-zA-Z]+$/
+        let reg = /^[0-9a-zA-Z]+$/;
         if (!this.record.pTaxNo) {
-          this.$toast('请输入发票税号！')
-          return
+          this.$toast('请输入发票税号！');
+          return;
         } else if (!reg.test(this.record.pTaxNo)) {
-          this.$toast('请输入有效的发票税号！')
-          return
+          this.$toast('请输入有效的发票税号！');
+          return;
         }
       }
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '保存中...'
-      })
-      this.record.pType = this.enterpriseFlag ? constant.invoice_title_type.business : constant.invoice_title_type.nonbusiness
+      });
+      this.record.pType = this.enterpriseFlag ? constant.invoice_title_type.business : constant.invoice_title_type.nonbusiness;
       invoiceTitleApi.saveInvoiceTitle(this.record).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
-          this.$emit('confirm')
+          this.$emit('confirm');
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     doDelete: function () {
       this.$dialog.confirm({
@@ -129,46 +129,46 @@ export default {
           duration: 0,
           forbidClick: true,
           message: '删除中...'
-        })
+        });
         invoiceTitleApi.deleteInvoiceTitle(this.record.invoiceTitleLibId).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.status === 1) {
-            this.$emit('confirm')
+            this.$emit('confirm');
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     toggle: function () {
-      this.expanded = !this.expanded
+      this.expanded = !this.expanded;
     },
     querySearchAsync: function (queryString, callback) {
       if (queryString) {
         let params = {
           invoiceType: this.enterpriseFlag ? constant.invoice_title_type.business : constant.invoice_title_type.nonbusiness,
           titleName: queryString
-        }
+        };
         invoiceTitleApi.queryInvoiceTitle(params).then(result => {
           if (result.status === 1) {
-            callback(result.data)
+            callback(result.data);
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
+        });
       }
     },
     handleSelect: function (item) {
       if (this.enterpriseFlag) {
-        this.record.pTaxNo = item.pTaxNo
-        this.record.pBankName = item.pBankName
-        this.record.pAccountNo = item.pAccountNo
-        this.record.pAddress = item.pAddress
-        this.record.pTelephone = item.pTelephone
+        this.record.pTaxNo = item.pTaxNo;
+        this.record.pBankName = item.pBankName;
+        this.record.pAccountNo = item.pAccountNo;
+        this.record.pAddress = item.pAddress;
+        this.record.pTelephone = item.pTelephone;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

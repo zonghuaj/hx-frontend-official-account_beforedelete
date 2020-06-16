@@ -149,12 +149,12 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import ValidateName from '@/components/order/charge/ValidateName'
-import OweList from '@/components/order/charge/OweList'
-import InvoiceTitleListPopup from '@/components/profile/invoiceTitle/InvoiceTitleListPopup'
-import constant from '@/assets/js/constant'
-import chargeApi from '@/api/charge'
+import HouseCard from '@/components/common/HouseCard';
+import ValidateName from '@/components/order/charge/ValidateName';
+import OweList from '@/components/order/charge/OweList';
+import InvoiceTitleListPopup from '@/components/profile/invoiceTitle/InvoiceTitleListPopup';
+import constant from '@/assets/js/constant';
+import chargeApi from '@/api/charge';
 
 export default {
   name: 'EditInvoice',
@@ -181,49 +181,49 @@ export default {
       showInvoiceTitleList: false,
       invoiceTitleType: constant.invoice_title_type.business,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   created: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
     if (params.hasOwnProperty('isCurrentYear')) {
-      this.isCurrentYear = params.isCurrentYear
-      this.isHouse = params.isHouse
-      this.paymentMethod = params.paymentMethod
-      this.previousPeriod = params.previousPeriod
-      this.payingPeriod = params.payingPeriod
-      this.previousYear = params.previousYear
-      this.validateNameFlag = params.validateNameFlag
+      this.isCurrentYear = params.isCurrentYear;
+      this.isHouse = params.isHouse;
+      this.paymentMethod = params.paymentMethod;
+      this.previousPeriod = params.previousPeriod;
+      this.payingPeriod = params.payingPeriod;
+      this.previousYear = params.previousYear;
+      this.validateNameFlag = params.validateNameFlag;
     } else {
-      this.initPage()
+      this.initPage();
     }
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       // 发票抬头
       if (this.showInvoiceTitleList) {
         if (this.$refs.invoiceTitleList.showInvoiceTitleForm) {
-          this.$refs.invoiceTitleList.showInvoiceTitleForm = false
-          return
+          this.$refs.invoiceTitleList.showInvoiceTitleForm = false;
+          return;
         }
-        this.showInvoiceTitleList = false
-        return
+        this.showInvoiceTitleList = false;
+        return;
       }
       this.$dialog.confirm({
         message: '您将放弃本次编辑内容，是否继续。'
@@ -234,23 +234,23 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
-      })
+        });
+      });
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.isCurrentYear = 1
-      this.isHouse = 0
-      this.paymentMethod = 'selfPay'
-      this.previousPeriod = []
-      this.payingPeriod = []
-      this.previousYear = {}
-      this.validateNameFlag = false
-      this.invoiceTitleType = constant.invoice_title_type.business
-      this.initPage()
+      this.curHouse = house;
+      this.isCurrentYear = 1;
+      this.isHouse = 0;
+      this.paymentMethod = 'selfPay';
+      this.previousPeriod = [];
+      this.payingPeriod = [];
+      this.previousYear = {};
+      this.validateNameFlag = false;
+      this.invoiceTitleType = constant.invoice_title_type.business;
+      this.initPage();
     },
     initPage: function () {
       chargeApi.getPayablePeriod(this.curHouse.houseId).then(result => {
@@ -283,9 +283,9 @@ export default {
         //   ceSubsidyPrice: 26,
         //   isHouse: 0
         // }]
-        this.previousPeriod = result.previousPeriod
+        this.previousPeriod = result.previousPeriod;
         if (this.previousPeriod.length > 0) {
-          this.showOwe()
+          this.showOwe();
         } else {
           // 测试数据
           // result.curPeriod = {
@@ -297,63 +297,63 @@ export default {
           //   ceSubsidyPrice: 26,
           //   isHouse: 1
           // }
-          let period = result.curPeriod
-          this.isHouse = period.isHouse
+          let period = result.curPeriod;
+          this.isHouse = period.isHouse;
           if (this.isHouse === 0) {
-            this.paymentMethod = 'reimburseAll'
+            this.paymentMethod = 'reimburseAll';
           }
-          this.payingPeriod = [this.getPeriod(period)]
+          this.payingPeriod = [this.getPeriod(period)];
           // 参照往年-发票
-          this.getPreviousYear()
+          this.getPreviousYear();
         }
-      })
+      });
     },
     // 参照往年-发票
     getPreviousYear: function () {
       chargeApi.getPreviousYear(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          this.previousYear = result.data
-          console.log(JSON.stringify(this.previousYear))
+          this.previousYear = result.data;
+          console.log(JSON.stringify(this.previousYear));
           if (this.previousYear.flag === 1) {
             // 户主姓名为空或者户主姓名为“无”，参照往年默认选中
             if (!this.previousYear.ownerName || this.previousYear.ownerName === '无') {
-              this.previousYear.isDefault = 1
+              this.previousYear.isDefault = 1;
             }
             if (this.previousYear.isDefault === 0 && !this.validateNameFlag) {
               this.$dialog.confirm({
                 message: '该房屋有往年交费信息可参照，请问是否参照？'
               }).then(() => {
-                this.paymentMethod = 'reference'
-                this.showValidateNamePopup = true
-              })
+                this.paymentMethod = 'reference';
+                this.showValidateNamePopup = true;
+              });
             } else {
-              this.paymentMethod = 'reference'
-              this.doRefer()
+              this.paymentMethod = 'reference';
+              this.doRefer();
             }
           }
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     // 参照往年
     doRefer: function () {
       let visibility = {
         selfPayCard: false,
         reimburseCard: false
-      }
+      };
       let selfPay = {
-      }
-      let reimbursePartArray = []
-      let invoices = this.previousYear.invoices
+      };
+      let reimbursePartArray = [];
+      let invoices = this.previousYear.invoices;
       for (let index = 0; index < invoices.length; index++) {
-        let invoice = invoices[index]
+        let invoice = invoices[index];
         if (invoice.invoiceTypeId === constant.invoice_type.selfPay) {
-          visibility.selfPayCard = true
-          selfPay.area = invoice.invoiceArea
-          selfPay.title = invoice.pTitle
+          visibility.selfPayCard = true;
+          selfPay.area = invoice.invoiceArea;
+          selfPay.title = invoice.pTitle;
         } else {
-          visibility.reimburseCard = true
+          visibility.reimburseCard = true;
           reimbursePartArray.push({
             area: invoice.invoiceArea,
             titleCategory: (invoice.invoiceTitleTypeId === constant.invoice_title_type.business ? 'business' : 'nonbusiness'),
@@ -365,31 +365,31 @@ export default {
             mobile: invoice.pTelephone,
             reimbursementApplicant: invoice.applicant,
             showMoreFields: false
-          })
+          });
         }
       }
       for (var index = 0; index < reimbursePartArray.length; index++) {
-        reimbursePartArray[index].id = 'p-' + (index + 1)
-        reimbursePartArray[index].deletable = index > 0
+        reimbursePartArray[index].id = 'p-' + (index + 1);
+        reimbursePartArray[index].deletable = index > 0;
       }
       if (visibility.selfPayCard) {
         if (visibility.reimburseCard) {
           // 部分报销
-          visibility.selfPayAreaField = true
-          visibility.btnAddInvoice = reimbursePartArray.length < 2
+          visibility.selfPayAreaField = true;
+          visibility.btnAddInvoice = reimbursePartArray.length < 2;
         } else {
           // 全部自费
-          visibility.selfPayAreaField = false
-          visibility.btnAddInvoice = false
+          visibility.selfPayAreaField = false;
+          visibility.btnAddInvoice = false;
         }
       } else {
         // 全部报销
-        visibility.selfPayAreaField = false
-        visibility.btnAddInvoice = reimbursePartArray.length < 3
+        visibility.selfPayAreaField = false;
+        visibility.btnAddInvoice = reimbursePartArray.length < 3;
       }
-      this.payingPeriod[0].visibility = visibility
-      this.payingPeriod[0].selfPay = selfPay
-      this.payingPeriod[0].reimbursePartArray = reimbursePartArray
+      this.payingPeriod[0].visibility = visibility;
+      this.payingPeriod[0].selfPay = selfPay;
+      this.payingPeriod[0].reimbursePartArray = reimbursePartArray;
     },
     changePaymentMethod: function () {
       for (var index = 0; index < this.payingPeriod.length; index++) {
@@ -399,20 +399,20 @@ export default {
             reimburseCard: false,
             selfPayAreaField: false,
             btnAddInvoice: false
-          }
+          };
           this.payingPeriod[index].selfPay = {
             area: this.payingPeriod[index].chargeArea
-          }
+          };
         } else if (this.paymentMethod === 'reimbursePart') {
           this.payingPeriod[index].visibility = {
             selfPayCard: true,
             reimburseCard: true,
             selfPayAreaField: true,
             btnAddInvoice: true
-          }
+          };
           this.payingPeriod[index].selfPay = {
             area: this.payingPeriod[index].chargeArea
-          }
+          };
           this.payingPeriod[index].reimbursePartArray = [{
             id: 'p-1',
             area: 0,
@@ -426,14 +426,14 @@ export default {
             reimbursementApplicant: '',
             showMoreFields: false,
             deletable: false
-          }]
+          }];
         } else if (this.paymentMethod === 'reimburseAll') {
           this.payingPeriod[index].visibility = {
             selfPayCard: false,
             reimburseCard: true,
             selfPayAreaField: false,
             btnAddInvoice: true
-          }
+          };
           this.payingPeriod[index].reimbursePartArray = [{
             id: 'p-1',
             area: this.payingPeriod[index].chargeArea,
@@ -447,27 +447,27 @@ export default {
             reimbursementApplicant: '',
             showMoreFields: false,
             deletable: false
-          }]
+          }];
         } else if (this.paymentMethod === 'reference') {
           if (this.previousYear.isDefault === 0 && !this.validateNameFlag) {
-            this.showValidateNamePopup = true
+            this.showValidateNamePopup = true;
           } else {
-            this.doRefer()
+            this.doRefer();
           }
         }
       }
     },
     addInvoice: function (period) {
-      let paymentMethod = this.paymentMethod
+      let paymentMethod = this.paymentMethod;
       if (paymentMethod === 'reference') {
         if (period.visibility.selfPayCard) {
           if (period.visibility.reimburseCard) {
-            paymentMethod = 'reimbursePart'
+            paymentMethod = 'reimbursePart';
           } else {
-            paymentMethod = 'selfPay'
+            paymentMethod = 'selfPay';
           }
         } else {
-          paymentMethod = 'reimburseAll'
+          paymentMethod = 'reimburseAll';
         }
       }
       if (paymentMethod === 'reimbursePart') {
@@ -484,8 +484,8 @@ export default {
           reimbursementApplicant: '',
           showMoreFields: false,
           deletable: true
-        })
-        period.visibility.btnAddInvoice = false
+        });
+        period.visibility.btnAddInvoice = false;
       } else if (paymentMethod === 'reimburseAll') {
         if (period.reimbursePartArray.length === 1) {
           period.reimbursePartArray.push({
@@ -501,7 +501,7 @@ export default {
             reimbursementApplicant: '',
             showMoreFields: false,
             deletable: true
-          })
+          });
         } else if (period.reimbursePartArray.length === 2) {
           period.reimbursePartArray.push({
             id: 'p-3',
@@ -516,83 +516,83 @@ export default {
             reimbursementApplicant: '',
             showMoreFields: false,
             deletable: true
-          })
-          period.visibility.btnAddInvoice = false
+          });
+          period.visibility.btnAddInvoice = false;
         }
       }
     },
     deleteInvoice: function (period, reimbursePart) {
-      let paymentMethod = this.paymentMethod
+      let paymentMethod = this.paymentMethod;
       if (paymentMethod === 'reference') {
         if (period.visibility.selfPayCard) {
           if (period.visibility.reimburseCard) {
-            paymentMethod = 'reimbursePart'
+            paymentMethod = 'reimbursePart';
           } else {
-            paymentMethod = 'selfPay'
+            paymentMethod = 'selfPay';
           }
         } else {
-          paymentMethod = 'reimburseAll'
+          paymentMethod = 'reimburseAll';
         }
       }
       if (paymentMethod === 'reimbursePart') {
-        period.reimbursePartArray.pop()
-        period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.selfPay.area)
+        period.reimbursePartArray.pop();
+        period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.selfPay.area);
       } else if (paymentMethod === 'reimburseAll') {
         if (period.reimbursePartArray.length === 2) {
-          period.reimbursePartArray.pop()
-          period.reimbursePartArray[0].area = period.chargeArea
+          period.reimbursePartArray.pop();
+          period.reimbursePartArray[0].area = period.chargeArea;
         } else if (period.reimbursePartArray.length === 3) {
           if (reimbursePart.id === period.reimbursePartArray[1].id) {
-            period.reimbursePartArray.splice(1, 1)
-            period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.reimbursePartArray[1].area)
-            period.reimbursePartArray[1].id = 'p-2'
+            period.reimbursePartArray.splice(1, 1);
+            period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.reimbursePartArray[1].area);
+            period.reimbursePartArray[1].id = 'p-2';
           } else if (reimbursePart.id === period.reimbursePartArray[2].id) {
-            period.reimbursePartArray.pop()
-            period.reimbursePartArray[1].area = this.float.subtract(period.chargeArea, period.reimbursePartArray[0].area)
+            period.reimbursePartArray.pop();
+            period.reimbursePartArray[1].area = this.float.subtract(period.chargeArea, period.reimbursePartArray[0].area);
           }
         }
       }
-      period.visibility.btnAddInvoice = true
+      period.visibility.btnAddInvoice = true;
     },
     toggleInvoice: function (reimbursePart) {
-      reimbursePart.showMoreFields = !reimbursePart.showMoreFields
+      reimbursePart.showMoreFields = !reimbursePart.showMoreFields;
     },
     changeSelfPayArea: function (period) {
-      let paymentMethod = this.paymentMethod
+      let paymentMethod = this.paymentMethod;
       if (paymentMethod === 'reference') {
         if (period.visibility.selfPayCard) {
           if (period.visibility.reimburseCard) {
-            paymentMethod = 'reimbursePart'
+            paymentMethod = 'reimbursePart';
           } else {
-            paymentMethod = 'selfPay'
+            paymentMethod = 'selfPay';
           }
         } else {
-          paymentMethod = 'reimburseAll'
+          paymentMethod = 'reimburseAll';
         }
       }
       if (paymentMethod === 'reimbursePart') {
         if (period.reimbursePartArray.length === 1) {
-          period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.selfPay.area)
+          period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, period.selfPay.area);
         }
       }
     },
     changeReimburseArea: function (period, reimbursePart) {
       if (period.isPartOwe === 0) {
-        let paymentMethod = this.paymentMethod
+        let paymentMethod = this.paymentMethod;
         if (paymentMethod === 'reference') {
           if (period.visibility.selfPayCard) {
             if (period.visibility.reimburseCard) {
-              paymentMethod = 'reimbursePart'
+              paymentMethod = 'reimbursePart';
             } else {
-              paymentMethod = 'selfPay'
+              paymentMethod = 'selfPay';
             }
           } else {
-            paymentMethod = 'reimburseAll'
+            paymentMethod = 'reimburseAll';
           }
         }
         if (paymentMethod === 'reimbursePart') {
           if (period.reimbursePartArray.length === 1) {
-            period.selfPay.area = this.float.subtract(period.chargeArea, period.reimbursePartArray[0].area)
+            period.selfPay.area = this.float.subtract(period.chargeArea, period.reimbursePartArray[0].area);
           }
         } else if (paymentMethod === 'reimburseAll') {
           if (period.reimbursePartArray.length === 1) {
@@ -609,79 +609,79 @@ export default {
               reimbursementApplicant: '',
               showMoreFields: false,
               deletable: true
-            })
+            });
           } else if (period.reimbursePartArray.length === 2) {
             if (reimbursePart.id === period.reimbursePartArray[0].id) {
-              period.reimbursePartArray[1].area = this.float.subtract(period.chargeArea, reimbursePart.area)
+              period.reimbursePartArray[1].area = this.float.subtract(period.chargeArea, reimbursePart.area);
             } else {
-              period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, reimbursePart.area)
+              period.reimbursePartArray[0].area = this.float.subtract(period.chargeArea, reimbursePart.area);
             }
           }
         }
       }
     },
     changeTitleCategory: function (reimbursePart) {
-      reimbursePart.title = ''
-      reimbursePart.taxNo = ''
-      reimbursePart.bank = ''
-      reimbursePart.bankAccount = ''
-      reimbursePart.address = ''
-      reimbursePart.mobile = ''
+      reimbursePart.title = '';
+      reimbursePart.taxNo = '';
+      reimbursePart.bank = '';
+      reimbursePart.bankAccount = '';
+      reimbursePart.address = '';
+      reimbursePart.mobile = '';
     },
     hideValidateName: function () {
-      this.showValidateNamePopup = false
+      this.showValidateNamePopup = false;
       if (this.payingPeriod[0].visibility.selfPayCard) {
         if (this.payingPeriod[0].visibility.reimburseCard) {
-          this.paymentMethod = 'reimbursePart'
+          this.paymentMethod = 'reimbursePart';
         } else {
-          this.paymentMethod = 'selfPay'
+          this.paymentMethod = 'selfPay';
         }
       } else {
-        this.paymentMethod = 'reimburseAll'
+        this.paymentMethod = 'reimburseAll';
       }
     },
     selectValidateName: function () {
-      this.showValidateNamePopup = false
-      this.validateNameFlag = true
-      this.doRefer()
+      this.showValidateNamePopup = false;
+      this.validateNameFlag = true;
+      this.doRefer();
     },
     showOwe: function () {
-      this.showOweList = true
+      this.showOweList = true;
     },
     hideOwe: function () {
       // ToDo
       if (this.payingPeriod.length === 0) {
-        this.goBack()
+        this.goBack();
       } else {
-        this.showOweList = false
+        this.showOweList = false;
       }
     },
     selectOwe: function (records) {
-      this.showOweList = false
-      this.isCurrentYear = 0
-      this.paymentMethod = 'reimburseAll'
-      this.payingPeriod = []
+      this.showOweList = false;
+      this.isCurrentYear = 0;
+      this.paymentMethod = 'reimburseAll';
+      this.payingPeriod = [];
       for (var index = 0; index < records.length; index++) {
-        this.payingPeriod.push(this.getPeriod(records[index]))
+        this.payingPeriod.push(this.getPeriod(records[index]));
       }
     },
     showInvoiceTitle: function (reimbursePart) {
-      this.showInvoiceTitleList = true
-      this.reimbursePart = reimbursePart
-      this.invoiceTitleType = reimbursePart.titleCategory === 'business' ? constant.invoice_title_type.business : constant.invoice_title_type.nonbusiness
+      this.showInvoiceTitleList = true;
+      this.reimbursePart = reimbursePart;
+      this.invoiceTitleType = reimbursePart.titleCategory === 'business' ? constant.invoice_title_type.business : constant.invoice_title_type.nonbusiness;
     },
     hideInvoiceTitle: function () {
-      this.showInvoiceTitleList = false
-      this.reimbursePart = null
+      this.showInvoiceTitleList = false;
+      this.reimbursePart = null;
     },
     selectInvoiceTitle: function (record) {
-      this.showInvoiceTitleList = false
-      this.reimbursePart.title = record.pTitle
-      this.reimbursePart.taxNo = record.pTaxNo
-      this.reimbursePart.bank = record.pBankName
-      this.reimbursePart.bankAccount = record.pAccountNo
-      this.reimbursePart.address = record.pAddress
-      this.reimbursePart.mobile = record.pTelephone
+      this.showInvoiceTitleList = false;
+      this.reimbursePart.title = record.pTitle;
+      this.reimbursePart.taxNo = record.pTaxNo;
+      this.reimbursePart.bank = record.pBankName;
+      this.reimbursePart.bankAccount = record.pAccountNo;
+      this.reimbursePart.address = record.pAddress;
+      this.reimbursePart.mobile = record.pTelephone;
     },
     next: function () {
       if (this.verify()) {
@@ -698,11 +698,11 @@ export default {
             previousYear: this.previousYear,
             validateNameFlag: this.validateNameFlag
           }
-        })
+        });
       }
     },
     getPeriod: function (period) {
-      console.log(JSON.stringify(period))
+      console.log(JSON.stringify(period));
       var result = {
         chargeId: period.chargeId,
         chargeMonth: period.chargeMonth,
@@ -712,26 +712,26 @@ export default {
         ceSubsidyPrice: period.ceSubsidyPrice,
         totalAccount: period.totalAccount,
         isPartOwe: period.isPartOwe
-      }
+      };
       if (this.paymentMethod === 'selfPay') {
         result.visibility = {
           selfPayCard: true,
           reimburseCard: false,
           selfPayAreaField: false,
           btnAddInvoice: false
-        }
+        };
         result.selfPay = {
           area: period.chargeArea
-        }
-        result.reimbursePartArray = []
+        };
+        result.reimbursePartArray = [];
       } else if (this.paymentMethod === 'reimburseAll') {
         result.visibility = {
           selfPayCard: false,
           reimburseCard: true,
           selfPayAreaField: false,
           btnAddInvoice: period.isPartOwe === 0
-        }
-        result.selfPay = {}
+        };
+        result.selfPay = {};
         result.reimbursePartArray = [{
           id: 'p-1',
           area: period.chargeArea,
@@ -745,129 +745,129 @@ export default {
           reimbursementApplicant: '',
           showMoreFields: false,
           deletable: false
-        }]
+        }];
       }
-      return result
+      return result;
     },
     verify: function () {
       for (var idx = 0; idx < this.payingPeriod.length; idx++) {
-        let period = this.payingPeriod[idx]
-        let paymentMethod = this.paymentMethod
+        let period = this.payingPeriod[idx];
+        let paymentMethod = this.paymentMethod;
         if (paymentMethod === 'reference') {
           if (period.visibility.selfPayCard) {
             if (period.visibility.reimburseCard) {
-              paymentMethod = 'reimbursePart'
+              paymentMethod = 'reimbursePart';
             } else {
-              paymentMethod = 'selfPay'
+              paymentMethod = 'selfPay';
             }
           } else {
-            paymentMethod = 'reimburseAll'
+            paymentMethod = 'reimburseAll';
           }
         }
         if (paymentMethod === 'selfPay') {
-          let reg = /^.{2,5}$/
+          let reg = /^.{2,5}$/;
           if (!reg.test(period.selfPay.title)) {
-            this.$toast('发票抬头最少2个字最多5个字')
-            return false
+            this.$toast('发票抬头最少2个字最多5个字');
+            return false;
           }
           if (period.selfPay.title === '个人') {
-            this.$toast('发票抬头不能是“个人”')
-            return false
+            this.$toast('发票抬头不能是“个人”');
+            return false;
           }
         } else if (paymentMethod === 'reimbursePart') {
           if (!period.selfPay.title) {
-            this.$toast('请输入发票抬头!')
-            return false
+            this.$toast('请输入发票抬头!');
+            return false;
           }
           if (period.selfPay.title === '个人') {
-            this.$toast('发票抬头不能是“个人”')
-            return false
+            this.$toast('发票抬头不能是“个人”');
+            return false;
           }
           if (!period.selfPay.area) {
-            this.$toast('请输入自费面积!')
-            return false
+            this.$toast('请输入自费面积!');
+            return false;
           } else {
-            let reg = /^\d+\.?\d{0,2}$/
+            let reg = /^\d+\.?\d{0,2}$/;
             if (!reg.test(period.selfPay.area)) {
-              this.$toast('自费面积最多2位小数')
-              return false
+              this.$toast('自费面积最多2位小数');
+              return false;
             }
           }
-          let totalArea = period.selfPay.area
+          let totalArea = period.selfPay.area;
           for (let i = 0; i < period.reimbursePartArray.length; i++) {
-            let reimburse = period.reimbursePartArray[i]
+            let reimburse = period.reimbursePartArray[i];
             if (!reimburse.title) {
-              this.$toast('请输入发票抬头!')
-              return false
+              this.$toast('请输入发票抬头!');
+              return false;
             }
             if (reimburse.title === '个人') {
-              this.$toast('发票抬头不能是“个人”')
-              return false
+              this.$toast('发票抬头不能是“个人”');
+              return false;
             }
             if (!reimburse.area) {
-              this.$toast('请输入报销面积!')
-              return false
+              this.$toast('请输入报销面积!');
+              return false;
             } else {
-              let reg = /^\d+\.?\d{0,2}$/
+              let reg = /^\d+\.?\d{0,2}$/;
               if (!reg.test(reimburse.area)) {
-                this.$toast('报销面积最多2位小数')
-                return false
+                this.$toast('报销面积最多2位小数');
+                return false;
               }
             }
             if (reimburse.reimbursementApplicant) {
-              let reg = /^.{2,5}$/
+              let reg = /^.{2,5}$/;
               if (!reg.test(reimburse.reimbursementApplicant)) {
-                this.$toast('报销人最少2个字最多5个字')
-                return false
+                this.$toast('报销人最少2个字最多5个字');
+                return false;
               }
             }
-            totalArea = this.float.add(totalArea, reimburse.area)
+            totalArea = this.float.add(totalArea, reimburse.area);
           }
           if (!this.float.isEqual(totalArea, period.chargeArea, 2)) {
-            this.$toast('发票自费/报销面积之和与交费面积不一致！')
-            return false
+            this.$toast('发票自费/报销面积之和与交费面积不一致！');
+            return false;
           }
         } else if (paymentMethod === 'reimburseAll') {
-          let totalArea = 0
+          let totalArea = 0;
           for (let i = 0; i < period.reimbursePartArray.length; i++) {
-            let reimburse = period.reimbursePartArray[i]
+            let reimburse = period.reimbursePartArray[i];
             if (!reimburse.title) {
-              this.$toast('请输入发票抬头!')
-              return false
+              this.$toast('请输入发票抬头!');
+              return false;
             }
             if (reimburse.title === '个人') {
-              this.$toast('发票抬头不能是“个人”')
-              return false
+              this.$toast('发票抬头不能是“个人”');
+              return false;
             }
             if (!reimburse.area) {
-              this.$toast('请输入报销面积!')
-              return false
+              this.$toast('请输入报销面积!');
+              return false;
             } else {
-              let reg = /^\d+\.?\d{0,2}$/
+              let reg = /^\d+\.?\d{0,2}$/;
               if (!reg.test(reimburse.area)) {
-                this.$toast('报销面积最多2位小数')
-                return false
+                this.$toast('报销面积最多2位小数');
+                return false;
               }
             }
             if (reimburse.reimbursementApplicant) {
-              let reg = /^.{2,5}$/
+              let reg = /^.{2,5}$/;
               if (!reg.test(reimburse.reimbursementApplicant)) {
-                this.$toast('报销人最少2个字最多5个字')
-                return false
+                this.$toast('报销人最少2个字最多5个字');
+                return false;
               }
             }
-            totalArea = this.float.add(totalArea, reimburse.area)
+            totalArea = this.float.add(totalArea, reimburse.area);
           }
           if (!this.float.isEqual(totalArea, period.chargeArea, 2)) {
-            this.$toast('发票自费/报销面积之和与交费面积不一致！')
-            return false
+            this.$toast('发票自费/报销面积之和与交费面积不一致！');
+            return false;
           }
         }
       }
-      return true
+      return true;
     }
   }
-}
+};
 </script>
 
 <style scoped>

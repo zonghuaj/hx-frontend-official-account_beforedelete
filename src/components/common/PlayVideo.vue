@@ -22,7 +22,7 @@ export default {
   ],
   data () {
     return {
-    }
+    };
   },
   beforeMount: function () {
   },
@@ -30,13 +30,13 @@ export default {
   },
   methods: {
     goBack: function () {
-      this.$emit('goBack')
+      this.$emit('goBack');
     },
     doDelete: function () {
-      this.$emit('delete')
+      this.$emit('delete');
     }
   }
-}
+};
 </script>
 
 <style scoped>

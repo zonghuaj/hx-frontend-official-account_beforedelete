@@ -90,9 +90,9 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import constant from '@/assets/js/constant'
-import invoiceApi from '@/api/invoice'
+import HouseCard from '@/components/common/HouseCard';
+import constant from '@/assets/js/constant';
+import invoiceApi from '@/api/invoice';
 
 export default {
   name: 'InvoiceList',
@@ -110,37 +110,37 @@ export default {
       invoiceList: [],
       icon: constant.radioStyle.icon,
       getInvoiceType: function (type) {
-        return type === 1 ? '自费' : '报销'
+        return type === 1 ? '自费' : '报销';
       }
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   watch: {
     chargeMonth: 'getInvoiceList'
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       if (this.source === 'serviceHall') {
         this.$router.push({
           name: 'serviceHall',
@@ -148,7 +148,7 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
+        });
       } else {
         if (this.bindHouse[0].isDefault === 0 && this.bindHouse.length > 1) {
           this.$router.push({
@@ -156,63 +156,63 @@ export default {
             query: {
               label: 'invoiceList'
             }
-          })
+          });
         } else {
           this.$router.push({
             name: 'profile'
-          })
+          });
         }
       }
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.chargeMonthList = []
-      this.chargeMonth = null
-      this.invoiceList = []
-      this.initPage()
+      this.curHouse = house;
+      this.chargeMonthList = [];
+      this.chargeMonth = null;
+      this.invoiceList = [];
+      this.initPage();
     },
     initPage: function () {
       invoiceApi.getHouseChargeMonthList(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          this.chargeMonthList = result.data
+          this.chargeMonthList = result.data;
           if (this.chargeMonthList.length > 0) {
-            this.chargeMonth = this.chargeMonthList[0]
+            this.chargeMonth = this.chargeMonthList[0];
           }
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showChargeMonth: function () {
       if (this.chargeMonthList.length > 0) {
-        this.showChargeMonthPopup = true
+        this.showChargeMonthPopup = true;
       }
     },
     selectChargeMonth: function (item) {
-      this.showChargeMonthPopup = false
-      this.chargeMonth = item
+      this.showChargeMonthPopup = false;
+      this.chargeMonth = item;
     },
     getInvoiceList: function () {
       if (!this.chargeMonth) {
-        return
+        return;
       }
       let params = {
         houseId: this.curHouse.houseId,
         chargeMonth: this.chargeMonth
-      }
+      };
       invoiceApi.getInvoiceList(params).then(result => {
         if (result.status === 1) {
-          this.invoiceList = result.data
+          this.invoiceList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     toggleInvoice: function (item) {
-      this.$set(item, 'expanded', !item.expanded)
+      this.$set(item, 'expanded', !item.expanded);
     },
     previewInvoice: function (item) {
       this.$router.push({
@@ -223,10 +223,10 @@ export default {
           bindHouse: this.bindHouse,
           invoice: item
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

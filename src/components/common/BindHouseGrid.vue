@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import DefaultHouseReminder from '@/components/common/DefaultHouseReminder'
-import baseApi from '@/api/base'
+import DefaultHouseReminder from '@/components/common/DefaultHouseReminder';
+import baseApi from '@/api/base';
 
 export default {
   name: 'BindHouseGrid',
@@ -44,16 +44,16 @@ export default {
     return {
       house: {},
       showPopup: false
-    }
+    };
   },
   beforeMount: function () {
     for (let index = 0; index < this.bindHouse.length; index++) {
       if (this.bindHouse[index].relationLabel) {
-        let relationLabel = this.bindHouse[index].relationLabel.substring(0, 2)
+        let relationLabel = this.bindHouse[index].relationLabel.substring(0, 2);
         if (relationLabel.length === 1) {
-          this.bindHouse[index].one = relationLabel
+          this.bindHouse[index].one = relationLabel;
         } else if (relationLabel.length === 2) {
-          this.bindHouse[index].two = relationLabel
+          this.bindHouse[index].two = relationLabel;
         }
       }
     }
@@ -62,36 +62,36 @@ export default {
   },
   methods: {
     goBack: function () {
-      this.$emit('goBack')
+      this.$emit('goBack');
     },
     select: function (item) {
-      this.house = item
+      this.house = item;
       baseApi.getReminder().then(result => {
         if (result.status === 1) {
           if (result.data > 0) {
-            this.showPopup = true
+            this.showPopup = true;
           } else {
-            this.doNext()
+            this.doNext();
           }
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     confirm: function () {
-      this.showPopup = false
-      this.house.isDefault = 1
-      this.doNext()
+      this.showPopup = false;
+      this.house.isDefault = 1;
+      this.doNext();
     },
     close: function () {
-      this.showPopup = false
-      this.doNext()
+      this.showPopup = false;
+      this.doNext();
     },
     doNext: function () {
-      this.$emit('select', this.house)
+      this.$emit('select', this.house);
     }
   }
-}
+};
 </script>
 
 <style scoped>

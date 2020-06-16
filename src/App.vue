@@ -28,28 +28,28 @@ export default {
   data () {
     return {
       isHomePage: true
-    }
+    };
   },
   created: function () {
-    let path = window.location.href
-    let suffix = path.substring(path.indexOf('#') + 1, path.length)
-    this.isHomePage = suffix.startsWith('/homePage')
+    let path = window.location.href;
+    let suffix = path.substring(path.indexOf('#') + 1, path.length);
+    this.isHomePage = suffix.startsWith('/homePage');
     window.addEventListener('beforeunload', () => {
-      let params = this.$route.params
+      let params = this.$route.params;
       if (Object.keys(params).length !== 0) {
-        sessionStorage.setItem('params', JSON.stringify(params))
+        sessionStorage.setItem('params', JSON.stringify(params));
       }
-    })
+    });
   },
   watch: {
     '$route' (to, from) {
-      let path = to.path
-      this.isHomePage = path.startsWith('/homePage')
+      let path = to.path;
+      this.isHomePage = path.startsWith('/homePage');
     }
   },
   methods: {
     nav: function (path) {
-      this.$router.push('/' + path)
+      this.$router.push('/' + path);
     },
     goCharge: function () {
       this.$router.push({
@@ -57,7 +57,7 @@ export default {
         query: {
           label: 'editInvoice'
         }
-      })
+      });
     },
     goRepair: function () {
       this.$router.push({
@@ -65,7 +65,7 @@ export default {
         query: {
           label: 'addRepair'
         }
-      })
+      });
     },
     goComplain: function () {
       this.$router.push({
@@ -73,7 +73,7 @@ export default {
         query: {
           label: 'addComplain'
         }
-      })
+      });
     },
     goStopHeating: function () {
       this.$router.push({
@@ -81,7 +81,7 @@ export default {
         query: {
           label: 'addStopHeating'
         }
-      })
+      });
     },
     goMyMaintenance: function () {
       this.$router.push({
@@ -89,7 +89,7 @@ export default {
         query: {
           label: 'myMaintenance'
         }
-      })
+      });
     },
     goServiceHall: function () {
       this.$router.push({
@@ -97,10 +97,10 @@ export default {
         query: {
           label: 'serviceHall'
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>

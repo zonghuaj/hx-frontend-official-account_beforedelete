@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import chargeApi from '@/api/charge'
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import chargeApi from '@/api/charge';
 
 export default {
   name: 'PayOrder',
@@ -63,35 +63,35 @@ export default {
         minute1: null,
         minute2: null
       }
-    }
+    };
   },
   created: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.orderId = params.orderId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.record = params.result
-    this.countdown()
+    this.orderId = params.orderId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.record = params.result;
+    this.countdown();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       this.$dialog.confirm({
         message: '您确定取消支付吗？确定后在支付剩余时间内仍可在待办业务中继续进行支付。'
       }).then(() => {
@@ -103,49 +103,49 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
-      })
+        });
+      });
     },
     // 倒计时
     countdown: function () {
-      let createTimeStr = this.record.createTime
-      createTimeStr = createTimeStr.replace(/-/g, '/')
-      let createTime = new Date(createTimeStr)
-      createTime.setDate(createTime.getDate() + 1)
-      let second = Math.floor((createTime.getTime() - new Date().getTime()) / 1000)
+      let createTimeStr = this.record.createTime;
+      createTimeStr = createTimeStr.replace(/-/g, '/');
+      let createTime = new Date(createTimeStr);
+      createTime.setDate(createTime.getDate() + 1);
+      let second = Math.floor((createTime.getTime() - new Date().getTime()) / 1000);
       if (second > 0) {
-        let hour = Math.floor(second / 3600)
-        second %= 3600
-        let minute = Math.floor(second / 60)
-        this.timmer.hour1 = Math.floor(hour / 10)
-        this.timmer.hour2 = hour % 10
-        this.timmer.minute1 = Math.floor(minute / 10)
-        this.timmer.minute2 = minute % 10
-        setTimeout(this.countdown, 30 * 1000)
+        let hour = Math.floor(second / 3600);
+        second %= 3600;
+        let minute = Math.floor(second / 60);
+        this.timmer.hour1 = Math.floor(hour / 10);
+        this.timmer.hour2 = hour % 10;
+        this.timmer.minute1 = Math.floor(minute / 10);
+        this.timmer.minute2 = minute % 10;
+        setTimeout(this.countdown, 30 * 1000);
       } else {
-        this.timmer.hour1 = 0
-        this.timmer.hour2 = 0
-        this.timmer.minute1 = 0
-        this.timmer.minute2 = 0
+        this.timmer.hour1 = 0;
+        this.timmer.hour2 = 0;
+        this.timmer.minute1 = 0;
+        this.timmer.minute2 = 0;
       }
     },
     // 微信支付
     doWeChatPay: function () {
-      let me = this
+      let me = this;
       me.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '加载中...'
-      })
+      });
       setTimeout(function () {
-        me.$toast.clear()
-      }, 60000)
+        me.$toast.clear();
+      }, 60000);
       JSSDKLoader().then(wx => {
-        let url = location.href.split('#')[0]
+        let url = location.href.split('#')[0];
         let params = {
           url: url,
           payChannel: 1
-        }
+        };
         chargeApi.weChatPay(me.record.orderId, params).then(result => {
           if (result.status === 1) {
             wx.config({
@@ -155,7 +155,7 @@ export default {
               nonceStr: result.data.jsApiSign.nonceStr, // 必填，生成签名的随机串
               signature: result.data.jsApiSign.signature, // 必填，签名
               jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
-            })
+            });
             wx.ready(function () {
               wx.chooseWXPay({
                 timestamp: result.data.jsApiPay.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -164,58 +164,58 @@ export default {
                 signType: result.data.jsApiPay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                 paySign: result.data.jsApiPay.paySign, // 支付签名
                 success: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                   me.$router.replace({
                     name: 'paySuccess',
                     params: {
                       curHouse: me.curHouse,
                       bindHouse: me.bindHouse
                     }
-                  })
+                  });
                 },
                 fail: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                   me.$dialog.alert({
                     message: JSON.stringify(res)
-                  })
+                  });
                 },
                 cancel: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                 }
-              })
-            })
+              });
+            });
             wx.error(function (res) {
-              me.$toast.clear()
+              me.$toast.clear();
               me.$dialog.alert({
                 message: JSON.stringify(res)
-              })
-            })
+              });
+            });
           } else {
-            me.$toast.clear()
+            me.$toast.clear();
             me.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
-      })
+        });
+      });
     },
     // 龙e付
     doCCBPay: function () {
-      let me = this
+      let me = this;
       me.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '加载中...'
-      })
+      });
       setTimeout(function () {
-        me.$toast.clear()
-      }, 60000)
+        me.$toast.clear();
+      }, 60000);
       JSSDKLoader().then(wx => {
-        let url = location.href.split('#')[0]
+        let url = location.href.split('#')[0];
         let params = {
           url: url,
           payChannel: 2
-        }
+        };
         chargeApi.weChatPay(me.record.orderId, params).then(result => {
           if (result.status === 1) {
             wx.config({
@@ -225,7 +225,7 @@ export default {
               nonceStr: result.data.jsApiSign.nonceStr, // 必填，生成签名的随机串
               signature: result.data.jsApiSign.signature, // 必填，签名
               jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
-            })
+            });
             wx.ready(function () {
               wx.chooseWXPay({
                 timestamp: result.data.jsApiPay.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -234,40 +234,40 @@ export default {
                 signType: result.data.jsApiPay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                 paySign: result.data.jsApiPay.paySign, // 支付签名
                 success: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                   me.$router.replace({
                     name: 'paySuccess',
                     params: {
                       curHouse: me.curHouse,
                       bindHouse: me.bindHouse
                     }
-                  })
+                  });
                 },
                 fail: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                   me.$dialog.alert({
                     message: JSON.stringify(res)
-                  })
+                  });
                 },
                 cancel: function (res) {
-                  me.$toast.clear()
+                  me.$toast.clear();
                 }
-              })
-            })
+              });
+            });
             wx.error(function (res) {
-              me.$toast.clear()
+              me.$toast.clear();
               me.$dialog.alert({
                 message: JSON.stringify(res)
-              })
-            })
+              });
+            });
           } else {
-            me.$toast.clear()
+            me.$toast.clear();
             me.$dialog.alert({
               message: result.data.message
-            })
+            });
           }
-        })
-      })
+        });
+      });
     },
     doDelete: function () {
       this.$dialog.confirm({
@@ -284,7 +284,7 @@ export default {
                   curHouse: this.curHouse,
                   bindHouse: this.bindHouse
                 }
-              })
+              });
             } else {
               this.$router.replace({
                 name: 'serviceHall',
@@ -292,16 +292,16 @@ export default {
                   curHouse: this.curHouse,
                   bindHouse: this.bindHouse
                 }
-              })
+              });
             }
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

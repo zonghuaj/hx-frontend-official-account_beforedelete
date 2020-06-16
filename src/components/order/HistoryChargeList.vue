@@ -41,9 +41,9 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import dictionaryApi from '@/api/dictionary'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import dictionaryApi from '@/api/dictionary';
+import orderApi from '@/api/order';
 
 export default {
   name: 'HistoryorderList',
@@ -57,32 +57,32 @@ export default {
       bindHouse: [],
       statusList: [],
       list: []
-    }
+    };
   },
   beforeMount: function () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'historyOrderList',
         params: {
@@ -90,40 +90,40 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     switchHouse: function (house) {
-      this.curHouse = house
-      this.getChargeList()
+      this.curHouse = house;
+      this.getChargeList();
     },
     initPage: function () {
       dictionaryApi.getPaymentOrderStatusList().then(result => {
         if (result.status === 1) {
-          this.statusList = result.data
-          this.getChargeList()
+          this.statusList = result.data;
+          this.getChargeList();
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     getChargeList: function () {
       orderApi.getChargeList(this.curHouse.houseId).then((result) => {
         if (result.status === 1) {
-          let list = result.data
+          let list = result.data;
           for (let i = 0; i < list.length; i++) {
-            let item = list[i]
+            let item = list[i];
             for (let j = 0; j < this.statusList.length; j++) {
               if (item.poStatusId === this.statusList[j].id) {
-                item.status = this.statusList[j].name
-                break
+                item.status = this.statusList[j].name;
+                break;
               }
             }
           }
-          this.list = list
+          this.list = list;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     // 查看详情
     viewDetails: function (item) {
@@ -135,10 +135,10 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -1,55 +1,55 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import ServiceHall from '@/components/ServiceHall'
-import Profile from '@/components/Profile'
-import EditInvoice from '@/components/order/charge/EditInvoice'
-import ConfirmOrder from '@/components/order/charge/ConfirmOrder'
-import OweList from '@/components/order/charge/OweList'
-import ValidateName from '@/components/order/charge/ValidateName'
-import PayOrder from '@/components/order/charge/PayOrder'
-import PaySuccess from '@/components/order/charge/PaySuccess'
-import PayFailure from '@/components/order/charge/PayFailure'
-import AddRepair from '@/components/order/AddRepair'
-import AddComplain from '@/components/order/AddComplain'
-import AddStopHeating from '@/components/order/AddStopHeating'
-import ConfirmStopHeating from '@/components/order/ConfirmStopHeating'
-import OrderList from '@/components/order/OrderList'
-import ChargeForm from '@/components/order/ChargeForm'
-import RepairForm from '@/components/order/RepairForm'
-import ComplainForm from '@/components/order/ComplainForm'
-import StopHeatingForm from '@/components/order/StopHeatingForm'
-import HistoryOrderList from '@/components/order/HistoryOrderList'
-import HistoryChargeList from '@/components/order/HistoryChargeList'
-import HistoryChargeForm from '@/components/order/HistoryChargeForm'
-import HistoryRepairList from '@/components/order/HistoryRepairList'
-import HistoryRepairForm from '@/components/order/HistoryRepairForm'
-import HistoryComplainList from '@/components/order/HistoryComplainList'
-import HistoryComplainForm from '@/components/order/HistoryComplainForm'
-import HistoryStopHeatingList from '@/components/order/HistoryStopHeatingList'
-import HistoryStopHeatingForm from '@/components/order/HistoryStopHeatingForm'
-import BusinessList from '@/components/service/business/BusinessList'
-import Area from '@/components/service/business/Area'
-import MyMaintenance from '@/components/service/maintenance/MyMaintenance'
-import MaintenanceList from '@/components/service/maintenance/MaintenanceList'
-import TimeArea from '@/components/service/maintenance/TimeArea'
-import InvoiceList from '@/components/profile/invoice/InvoiceList'
-import PreviewInvoice from '@/components/profile/invoice/PreviewInvoice'
-import InvoiceTitleList from '@/components/profile/invoiceTitle/InvoiceTitleList'
-import InvoiceTitleForm from '@/components/profile/invoiceTitle/InvoiceTitleForm'
-import InformationMaintenance from '@/components/service/informationMaintenance/InformationMaintenance'
-import MobileMaintenance from '@/components/service/informationMaintenance/MobileMaintenance'
-import ChooseRoom from '../components/house/ChooseRoom'
-import Card from '../components/house/Card'
-import Address from '../components/house/Address'
-import Company from '../components/house/Company'
-import blueAddress from '../components/house/BlueAddress'
-import floorNumber from '../components/house/FloorNumber'
-import phoneNumber from '../components/house/PhoneNumber'
-import HouseList from '../components/house/HouseList'
-import EditHouse from '../components/house/EditHouse'
-import AboutUs from '@/components/other/AboutUs'
+import Vue from 'vue';
+import Router from 'vue-router';
+import ServiceHall from '@/components/ServiceHall';
+import Profile from '@/components/Profile';
+import EditInvoice from '@/components/order/charge/EditInvoice';
+import ConfirmOrder from '@/components/order/charge/ConfirmOrder';
+import OweList from '@/components/order/charge/OweList';
+import ValidateName from '@/components/order/charge/ValidateName';
+import PayOrder from '@/components/order/charge/PayOrder';
+import PaySuccess from '@/components/order/charge/PaySuccess';
+import PayFailure from '@/components/order/charge/PayFailure';
+import AddRepair from '@/components/order/AddRepair';
+import AddComplain from '@/components/order/AddComplain';
+import AddStopHeating from '@/components/order/AddStopHeating';
+import ConfirmStopHeating from '@/components/order/ConfirmStopHeating';
+import OrderList from '@/components/order/OrderList';
+import ChargeForm from '@/components/order/ChargeForm';
+import RepairForm from '@/components/order/RepairForm';
+import ComplainForm from '@/components/order/ComplainForm';
+import StopHeatingForm from '@/components/order/StopHeatingForm';
+import HistoryOrderList from '@/components/order/HistoryOrderList';
+import HistoryChargeList from '@/components/order/HistoryChargeList';
+import HistoryChargeForm from '@/components/order/HistoryChargeForm';
+import HistoryRepairList from '@/components/order/HistoryRepairList';
+import HistoryRepairForm from '@/components/order/HistoryRepairForm';
+import HistoryComplainList from '@/components/order/HistoryComplainList';
+import HistoryComplainForm from '@/components/order/HistoryComplainForm';
+import HistoryStopHeatingList from '@/components/order/HistoryStopHeatingList';
+import HistoryStopHeatingForm from '@/components/order/HistoryStopHeatingForm';
+import BusinessList from '@/components/service/business/BusinessList';
+import Area from '@/components/service/business/Area';
+import MyMaintenance from '@/components/service/maintenance/MyMaintenance';
+import MaintenanceList from '@/components/service/maintenance/MaintenanceList';
+import TimeArea from '@/components/service/maintenance/TimeArea';
+import InvoiceList from '@/components/profile/invoice/InvoiceList';
+import PreviewInvoice from '@/components/profile/invoice/PreviewInvoice';
+import InvoiceTitleList from '@/components/profile/invoiceTitle/InvoiceTitleList';
+import InvoiceTitleForm from '@/components/profile/invoiceTitle/InvoiceTitleForm';
+import InformationMaintenance from '@/components/service/informationMaintenance/InformationMaintenance';
+import MobileMaintenance from '@/components/service/informationMaintenance/MobileMaintenance';
+import ChooseRoom from '../components/house/ChooseRoom';
+import Card from '../components/house/Card';
+import Address from '../components/house/Address';
+import Company from '../components/house/Company';
+import blueAddress from '../components/house/BlueAddress';
+import floorNumber from '../components/house/FloorNumber';
+import phoneNumber from '../components/house/PhoneNumber';
+import HouseList from '../components/house/HouseList';
+import EditHouse from '../components/house/EditHouse';
+import AboutUs from '@/components/other/AboutUs';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'hash',
@@ -474,14 +474,14 @@ export default new Router({
   }],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition || typeof savedPosition === 'undefined') {
-      from.meta.isKeepAlive = typeof from.meta.isKeepAlive === 'undefined' ? undefined : false
-      to.meta.isKeepAlive = typeof to.meta.isKeepAlive === 'undefined' ? undefined : true
+      from.meta.isKeepAlive = typeof from.meta.isKeepAlive === 'undefined' ? undefined : false;
+      to.meta.isKeepAlive = typeof to.meta.isKeepAlive === 'undefined' ? undefined : true;
       if (savedPosition) {
-        return savedPosition
+        return savedPosition;
       }
     } else {
-      from.meta.isKeepAlive = typeof from.meta.isKeepAlive === 'undefined' ? undefined : true
-      to.meta.isKeepAlive = typeof to.meta.isKeepAlive === 'undefined' ? undefined : false
+      from.meta.isKeepAlive = typeof from.meta.isKeepAlive === 'undefined' ? undefined : true;
+      to.meta.isKeepAlive = typeof to.meta.isKeepAlive === 'undefined' ? undefined : false;
     }
   }
-})
+});

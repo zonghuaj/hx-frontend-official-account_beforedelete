@@ -1,29 +1,33 @@
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import common from './utils/common'
-import float from './utils/float'
-import rem from './utils/rem'
-import axios from 'axios'
-import VueWechatTitle from 'vue-wechat-title'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import './assets/reset.css'
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import common from './utils/common';
+import float from './utils/float';
+import rem from './utils/rem';
+import axios from 'axios';
+import VueWechatTitle from 'vue-wechat-title';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import './assets/reset.css';
 
-import Pagination from 'tony-ui'
+// mock
+// WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
+import './mock';
+
+import Pagination from 'tony-ui';
 // 全局引入按需引入UI库 vant
-import './plugins/vant'
-Vue.use(VueWechatTitle)
-Vue.use(Pagination)
-Vue.use(ElementUI)
+import './plugins/vant';
+Vue.use(VueWechatTitle);
+Vue.use(Pagination);
+Vue.use(ElementUI);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.prototype.common = common
-Vue.prototype.float = float
-Vue.prototype.rem = rem
+Vue.prototype.common = common;
+Vue.prototype.float = float;
+Vue.prototype.rem = rem;
 
-axios.defaults.baseURL = process.env.API_ROOT
+axios.defaults.baseURL = process.env.API_ROOT;
 
 /* eslint-disable */
 let uid = sessionStorage.getItem('uid')

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
+import constant from '@/assets/js/constant';
 
 export default {
   name: 'OweList',
@@ -42,36 +42,36 @@ export default {
   data () {
     return {
       icon: constant.checkboxStyle.icon
-    }
+    };
   },
   props: ['previousPeriod'],
   methods: {
     select: function (period) {
       if (period.checked) {
-        this.$set(period, 'checked', false)
+        this.$set(period, 'checked', false);
       } else {
-        this.$set(period, 'checked', true)
+        this.$set(period, 'checked', true);
       }
     },
     doConfirm: function () {
-      let records = []
+      let records = [];
       for (var index = 0; index < this.previousPeriod.length; index++) {
-        let period = this.previousPeriod[index]
+        let period = this.previousPeriod[index];
         if (period.checked) {
-          records.push(period)
+          records.push(period);
         }
       }
       if (records.length === 0) {
-        this.$toast('请选择欠费年度！')
-        return
+        this.$toast('请选择欠费年度！');
+        return;
       }
-      this.$emit('confirm', records)
+      this.$emit('confirm', records);
     },
     doCancel: function () {
-      this.$emit('cancel')
+      this.$emit('cancel');
     }
   }
-}
+};
 </script>
 
 <style scoped>

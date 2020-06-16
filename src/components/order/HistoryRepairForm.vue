@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import PlayVideo from '@/components/common/PlayVideo'
-import PreviewPhoto from '@/components/common/PreviewPhoto'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import PlayVideo from '@/components/common/PlayVideo';
+import PreviewPhoto from '@/components/common/PreviewPhoto';
+import orderApi from '@/api/order';
 
 export default {
   name: 'HistoryRepairForm',
@@ -108,43 +108,43 @@ export default {
       showPreviewPhotoPopup: false,
       photo: null,
       deleteFlag: false
-    }
+    };
   },
   beforeMount () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.compliantId = params.compliantId
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.compliantId = params.compliantId;
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
-      this.$toast.clear()
+      history.pushState(null, null, document.URL);
+      this.$toast.clear();
       // 播放视频
       if (this.showPlayVideoPopup) {
-        this.showPlayVideoPopup = false
-        return
+        this.showPlayVideoPopup = false;
+        return;
       }
       // 预览照片
       if (this.showPreviewPhotoPopup) {
-        this.showPreviewPhotoPopup = false
-        return
+        this.showPreviewPhotoPopup = false;
+        return;
       }
       this.$router.push({
         name: 'historyRepairList',
@@ -153,64 +153,64 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     initPage: function () {
       orderApi.getComplaint(this.compliantId).then(result => {
         if (result.status === 1) {
-          this.record = result.data
+          this.record = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     toggle: function () {
-      this.expanded = !this.expanded
+      this.expanded = !this.expanded;
     },
     doEvaluate: function () {
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
         message: '提交评价中...'
-      })
+      });
       let params = {
         score: this.record.evaluateLevel,
         content: this.record.evaluateContent
-      }
+      };
       orderApi.evaluateComplaint(this.compliantId, params).then(result => {
-        this.$toast.clear()
+        this.$toast.clear();
         if (result.status === 1) {
           this.$dialog.alert({
             message: '提交评价成功'
           }).then(() => {
-            this.record.isEvaluate = 1
-          })
+            this.record.isEvaluate = 1;
+          });
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showPlayVideo: function () {
-      this.showPlayVideoPopup = true
+      this.showPlayVideoPopup = true;
     },
     hidePlayVideo: function () {
-      this.showPlayVideoPopup = false
+      this.showPlayVideoPopup = false;
     },
     showPreviewPhoto: function (label) {
-      this.showPreviewPhotoPopup = true
+      this.showPreviewPhotoPopup = true;
       if (label === 'photo1') {
-        this.photo = this.record.photo1
+        this.photo = this.record.photo1;
       } else if (label === 'photo2') {
-        this.photo = this.record.photo2
+        this.photo = this.record.photo2;
       } else if (label === 'photo3') {
-        this.photo = this.record.photo3
+        this.photo = this.record.photo3;
       }
     },
     hidePreviewPhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>

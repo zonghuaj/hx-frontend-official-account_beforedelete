@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import PreviewPhoto from '@/components/common/PreviewPhoto'
+import HouseCard from '@/components/common/HouseCard';
+import PreviewPhoto from '@/components/common/PreviewPhoto';
 
 export default {
   name: 'AddStopHeating',
@@ -109,56 +109,56 @@ export default {
       label: null,
       photo: null,
       deleteFlag: true
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.other = params.other
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.other = params.other;
     if (params.hasOwnProperty('record')) {
-      let record = params.record
-      this.ownerName = record.ownerName
-      this.identifyNo = record.identifyNo
-      this.contact = record.contact
-      this.telephone = record.telephone
-      this.remark = record.remark
-      this.identityPhoto1 = record.identityPhoto1
-      this.identityPhoto2 = record.identityPhoto2
-      this.propertyPhoto1 = record.propertyPhoto1
-      this.propertyPhoto2 = record.propertyPhoto2
-      this.propertyPhoto3 = record.propertyPhoto3
+      let record = params.record;
+      this.ownerName = record.ownerName;
+      this.identifyNo = record.identifyNo;
+      this.contact = record.contact;
+      this.telephone = record.telephone;
+      this.remark = record.remark;
+      this.identityPhoto1 = record.identityPhoto1;
+      this.identityPhoto2 = record.identityPhoto2;
+      this.propertyPhoto1 = record.propertyPhoto1;
+      this.propertyPhoto2 = record.propertyPhoto2;
+      this.propertyPhoto3 = record.propertyPhoto3;
     } else {
-      this.contact = this.curHouse.contact
-      this.telephone = this.curHouse.telephone
+      this.contact = this.curHouse.contact;
+      this.telephone = this.curHouse.telephone;
     }
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       // 房屋卡片
       if (this.$refs.houseCard.showPopup) {
-        this.$refs.houseCard.showPopup = false
-        return
+        this.$refs.houseCard.showPopup = false;
+        return;
       }
       // 预览照片
       if (this.showPreviewPhotoPopup) {
-        this.showPreviewPhotoPopup = false
-        return
+        this.showPreviewPhotoPopup = false;
+        return;
       }
       this.$dialog.confirm({
         message: '您将放弃本次编辑内容，是否继续。'
@@ -169,54 +169,54 @@ export default {
             curHouse: this.curHouse,
             bindHouse: this.bindHouse
           }
-        })
-      })
+        });
+      });
     },
     switchHouse: function (house, other) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.other = other
-      this.contact = this.curHouse.contact
-      this.telephone = this.curHouse.telephone
+      this.curHouse = house;
+      this.other = other;
+      this.contact = this.curHouse.contact;
+      this.telephone = this.curHouse.telephone;
     },
     doNext: function () {
       if (!this.ownerName) {
-        this.$toast('请输入房主姓名')
-        return
+        this.$toast('请输入房主姓名');
+        return;
       }
       if (!this.identifyNo) {
-        this.$toast('请输入房主身份证号')
-        return
+        this.$toast('请输入房主身份证号');
+        return;
       } else {
-        let regex = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+        let regex = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
         if (!regex.test(this.identifyNo)) {
-          this.$toast('请输入有效的房主身份证号')
-          return
+          this.$toast('请输入有效的房主身份证号');
+          return;
         }
       }
       if (!this.contact) {
-        this.$toast('请输入联系人')
-        return
+        this.$toast('请输入联系人');
+        return;
       }
       if (!this.telephone) {
-        this.$toast('请输入联系电话')
-        return
+        this.$toast('请输入联系电话');
+        return;
       } else {
-        let regex = /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/
+        let regex = /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/;
         if (!regex.test(this.telephone)) {
-          this.$toast('请输入有效的联系电话')
-          return
+          this.$toast('请输入有效的联系电话');
+          return;
         }
       }
       if (!this.identityPhoto1 || !this.identityPhoto2) {
-        this.$toast('请上传户主身份证照片')
-        return
+        this.$toast('请上传户主身份证照片');
+        return;
       }
       if (!this.propertyPhoto1 && !this.propertyPhoto2 && !this.propertyPhoto3) {
-        this.$toast('请上传房产证照片')
-        return
+        this.$toast('请上传房产证照片');
+        return;
       }
       let record = {
         ownerName: this.ownerName,
@@ -229,7 +229,7 @@ export default {
         propertyPhoto1: this.propertyPhoto1,
         propertyPhoto2: this.propertyPhoto2,
         propertyPhoto3: this.propertyPhoto3
-      }
+      };
       this.$router.push({
         name: 'confirmStopHeating',
         params: {
@@ -238,7 +238,7 @@ export default {
           other: this.other,
           record: record
         }
-      })
+      });
     },
     afterRead: function (file, detail) {
       // 压缩图片
@@ -246,52 +246,52 @@ export default {
         width: 750
       }).then(result => {
         if (detail.name === 'identityPhoto1') {
-          this.identityPhoto1 = result
+          this.identityPhoto1 = result;
         } else if (detail.name === 'identityPhoto2') {
-          this.identityPhoto2 = result
+          this.identityPhoto2 = result;
         } else if (detail.name === 'propertyPhoto1') {
-          this.propertyPhoto1 = result
+          this.propertyPhoto1 = result;
         } else if (detail.name === 'propertyPhoto2') {
-          this.propertyPhoto2 = result
+          this.propertyPhoto2 = result;
         } else if (detail.name === 'propertyPhoto3') {
-          this.propertyPhoto3 = result
+          this.propertyPhoto3 = result;
         }
-      })
+      });
     },
     showPreviewPhoto: function (label) {
-      this.showPreviewPhotoPopup = true
-      this.label = label
+      this.showPreviewPhotoPopup = true;
+      this.label = label;
       if (this.label === 'identityPhoto1') {
-        this.photo = this.identityPhoto1
+        this.photo = this.identityPhoto1;
       } else if (this.label === 'identityPhoto2') {
-        this.photo = this.identityPhoto2
+        this.photo = this.identityPhoto2;
       } else if (this.label === 'propertyPhoto1') {
-        this.photo = this.propertyPhoto1
+        this.photo = this.propertyPhoto1;
       } else if (this.label === 'propertyPhoto2') {
-        this.photo = this.propertyPhoto2
+        this.photo = this.propertyPhoto2;
       } else if (this.label === 'propertyPhoto3') {
-        this.photo = this.propertyPhoto3
+        this.photo = this.propertyPhoto3;
       }
     },
     hidePreviewPhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
     },
     deletePhoto: function () {
-      this.showPreviewPhotoPopup = false
+      this.showPreviewPhotoPopup = false;
       if (this.label === 'identityPhoto1') {
-        this.identityPhoto1 = null
+        this.identityPhoto1 = null;
       } else if (this.label === 'identityPhoto2') {
-        this.identityPhoto2 = null
+        this.identityPhoto2 = null;
       } else if (this.label === 'propertyPhoto1') {
-        this.propertyPhoto1 = null
+        this.propertyPhoto1 = null;
       } else if (this.label === 'propertyPhoto2') {
-        this.propertyPhoto2 = null
+        this.propertyPhoto2 = null;
       } else if (this.label === 'propertyPhoto3') {
-        this.propertyPhoto3 = null
+        this.propertyPhoto3 = null;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

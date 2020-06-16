@@ -30,6 +30,6 @@ const constant = {
   system_channel: {
     wechat: 1
   }
-}
+};
 
-export default constant
+export default constant;

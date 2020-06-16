@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { getCardHouse, modifyHouse } from '@/api/house'
+import { getCardHouse, modifyHouse } from '@/api/house';
 
 export default {
   name: 'Card',
@@ -93,68 +93,68 @@ export default {
       cardCode: null,
       house: null,
       isDefault: false
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.company = params.company
-    this.searchMethod = params.searchMethod
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.company = params.company;
+    this.searchMethod = params.searchMethod;
   },
   mounted: function () {
   },
   methods: {
     doSearch: function () {
       if (!this.cardCode) {
-        this.$toast('请输入供热卡号！')
-        return
+        this.$toast('请输入供热卡号！');
+        return;
       }
-      this.house = null
-      this.isDefault = false
+      this.house = null;
+      this.isDefault = false;
       let params = {
         companyId: this.company.companyId,
         cardCode: this.cardCode
-      }
+      };
       getCardHouse(params).then(result => {
         if (result.data.status === 1) {
-          let houseList = result.data.data
+          let houseList = result.data.data;
           if (houseList.length > 0) {
-            let house = houseList[0]
-            let maskCustomerName = house.maskCustomerName
+            let house = houseList[0];
+            let maskCustomerName = house.maskCustomerName;
             if (maskCustomerName && maskCustomerName !== '无') {
-              house.relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1)
+              house.relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1);
             } else {
-              house.relationLabel = '我家'
+              house.relationLabel = '我家';
             }
-            this.house = house
+            this.house = house;
           } else {
-            this.$toast('当前卡号不存在，请重新输入或选择其他方式添加。')
+            this.$toast('当前卡号不存在，请重新输入或选择其他方式添加。');
           }
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     },
     doSave: function () {
-      let reg = /^.{1,5}$/
+      let reg = /^.{1,5}$/;
       if (reg.test(this.house.relationLabel)) {
         this.$toast.loading({
           duration: 0,
           forbidClick: true,
           message: '保存中...'
-        })
+        });
         let params = {
           relationLabel: this.house.relationLabel,
           isDefault: this.isDefault ? 1 : 0
-        }
+        };
         modifyHouse(this.house.houseId, 1, params).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -162,20 +162,20 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       } else {
-        this.$toast('房屋标签最少1个字最多5个字')
+        this.$toast('房屋标签最少1个字最多5个字');
       }
     },
     setLabel: function (label) {
-      this.house.relationLabel = label
+      this.house.relationLabel = label;
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import HouseCard from '@/components/common/HouseCard'
-import orderApi from '@/api/order'
+import HouseCard from '@/components/common/HouseCard';
+import orderApi from '@/api/order';
 
 export default {
   name: 'HistoryRepairList',
@@ -51,32 +51,32 @@ export default {
       curHouse: {},
       bindHouse: [],
       list: []
-    }
+    };
   },
   beforeMount: function () {
-    var params = this.$route.params
+    var params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.source = params.source
-    this.curHouse = params.curHouse
-    this.bindHouse = params.bindHouse
-    this.initPage()
+    this.source = params.source;
+    this.curHouse = params.curHouse;
+    this.bindHouse = params.bindHouse;
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       this.$router.push({
         name: 'historyOrderList',
         params: {
@@ -84,23 +84,23 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     },
     switchHouse: function (house) {
       if (this.curHouse === house) {
-        return
+        return;
       }
-      this.curHouse = house
-      this.initPage()
+      this.curHouse = house;
+      this.initPage();
     },
     initPage () {
       orderApi.getRepairList(this.curHouse.houseId).then(result => {
         if (result.status === 1) {
-          this.list = result.data
+          this.list = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     // 查看详情
     viewDetails: function (item) {
@@ -112,10 +112,10 @@ export default {
           curHouse: this.curHouse,
           bindHouse: this.bindHouse
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>

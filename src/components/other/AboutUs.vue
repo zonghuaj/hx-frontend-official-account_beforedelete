@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import JSSDKLoader from '@/assets/js/WeChat.js'
-import wxApi from '@/api/wx'
-import otherApi from '@/api/other'
+import JSSDKLoader from '@/assets/js/WeChat.js';
+import wxApi from '@/api/wx';
+import otherApi from '@/api/other';
 
 export default {
   name: 'AboutUs',
@@ -27,28 +27,28 @@ export default {
       companyFlag: true,
       company: {},
       partnerList: []
-    }
+    };
   },
   beforeMount: function () {
-    this.initPage()
+    this.initPage();
   },
   mounted: function () {
     if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL)
-      window.addEventListener('popstate', this.goBack, false)
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
   },
   destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false)
+    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
-      history.pushState(null, null, document.URL)
+      history.pushState(null, null, document.URL);
       JSSDKLoader().then(wx => {
-        let url = location.href.split('#')[0]
+        let url = location.href.split('#')[0];
         let params = {
           url: url
-        }
+        };
         wxApi.getSignature(params).then(result => {
           if (result.status === 1) {
             wx.config({
@@ -58,40 +58,40 @@ export default {
               nonceStr: result.data.nonceStr, // 必填，生成签名的随机串
               signature: result.data.signature, // 必填，签名
               jsApiList: ['closeWindow'] // 必填，需要使用的JS接口列表
-            })
+            });
             wx.ready(function () {
-              wx.closeWindow()
-            })
+              wx.closeWindow();
+            });
             wx.error(function (res) {
-              alert(JSON.stringify(res))
-            })
+              alert(JSON.stringify(res));
+            });
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
-      })
+        });
+      });
     },
     initPage: function () {
       otherApi.getCompany().then(result => {
         if (result.status === 1) {
-          this.company = result.data
+          this.company = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
       otherApi.getPartnerList().then(result => {
         if (result.status === 1) {
-          this.partnerList = result.data
+          this.partnerList = result.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     setCompanyFlag: function (companyFlag) {
-      this.companyFlag = companyFlag
+      this.companyFlag = companyFlag;
     }
   }
-}
+};
 </script>
 
 <style scoped>

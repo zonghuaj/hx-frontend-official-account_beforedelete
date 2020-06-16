@@ -2,7 +2,7 @@
  * 判断obj是否为一个整数
  */
 function isInteger (obj) {
-  return Math.floor(obj) === obj
+  return Math.floor(obj) === obj;
 }
 
 /*
@@ -12,19 +12,19 @@ function isInteger (obj) {
  *   {times:100, num: 314}
  */
 function toInteger (floatNum) {
-  let ret = {times: 1, num: 0}
+  let ret = {times: 1, num: 0};
   if (isInteger(floatNum)) {
-    ret.num = floatNum
-    return ret
+    ret.num = floatNum;
+    return ret;
   }
-  let strfi = floatNum + ''
-  let dotPos = strfi.indexOf('.')
-  let len = strfi.substr(dotPos + 1).length
-  let times = Math.pow(10, len)
-  let intNum = parseInt(floatNum * times + 0.5, 10)
-  ret.times = times
-  ret.num = intNum
-  return ret
+  let strfi = floatNum + '';
+  let dotPos = strfi.indexOf('.');
+  let len = strfi.substr(dotPos + 1).length;
+  let times = Math.pow(10, len);
+  let intNum = parseInt(floatNum * times + 0.5, 10);
+  ret.times = times;
+  ret.num = intNum;
+  return ret;
 }
 
 /*
@@ -37,76 +37,76 @@ function toInteger (floatNum) {
  *
  */
 function operation (a, b, op) {
-  let o1 = toInteger(a)
-  let o2 = toInteger(b)
-  let n1 = o1.num
-  let n2 = o2.num
-  let t1 = o1.times
-  let t2 = o2.times
-  let max = t1 > t2 ? t1 : t2
-  let result = null
+  let o1 = toInteger(a);
+  let o2 = toInteger(b);
+  let n1 = o1.num;
+  let n2 = o2.num;
+  let t1 = o1.times;
+  let t2 = o2.times;
+  let max = t1 > t2 ? t1 : t2;
+  let result = null;
   switch (op) {
     case 'add':
       if (t1 === t2) {
-        result = n1 + n2
+        result = n1 + n2;
       } else if (t1 > t2) {
-        result = n1 + n2 * (t1 / t2)
+        result = n1 + n2 * (t1 / t2);
       } else {
-        result = n1 * (t2 / t1) + n2
+        result = n1 * (t2 / t1) + n2;
       }
-      return result / max
+      return result / max;
     case 'subtract':
       if (t1 === t2) {
-        result = n1 - n2
+        result = n1 - n2;
       } else if (t1 > t2) {
-        result = n1 - n2 * (t1 / t2)
+        result = n1 - n2 * (t1 / t2);
       } else {
-        result = n1 * (t2 / t1) - n2
+        result = n1 * (t2 / t1) - n2;
       }
-      return result / max
+      return result / max;
     case 'multiply':
-      result = (n1 * n2) / (t1 * t2)
-      return result
+      result = (n1 * n2) / (t1 * t2);
+      return result;
     case 'divide':
-      result = (n1 / n2) * (t2 / t1)
-      return result
+      result = (n1 / n2) * (t2 / t1);
+      return result;
   }
 }
 
 function add (value1, value2, precision) {
-  precision = precision || 2
-  let pow = Math.pow(10, precision)
-  let value = operation(value1, value2, 'add')
-  value = Math.round(operation(value, pow, 'multiply')) / pow
-  return value
+  precision = precision || 2;
+  let pow = Math.pow(10, precision);
+  let value = operation(value1, value2, 'add');
+  value = Math.round(operation(value, pow, 'multiply')) / pow;
+  return value;
 }
 
 function subtract (value1, value2, precision) {
-  precision = precision || 2
-  let pow = Math.pow(10, precision)
-  let value = operation(value1, value2, 'subtract')
-  value = Math.round(operation(value, pow, 'multiply')) / pow
-  return value
+  precision = precision || 2;
+  let pow = Math.pow(10, precision);
+  let value = operation(value1, value2, 'subtract');
+  value = Math.round(operation(value, pow, 'multiply')) / pow;
+  return value;
 }
 
 function multiply (value1, value2, precision) {
-  precision = precision || 2
-  let pow = Math.pow(10, precision)
-  let value = operation(value1, value2, 'multiply')
-  value = Math.round(operation(value, pow, 'multiply')) / pow
-  return value
+  precision = precision || 2;
+  let pow = Math.pow(10, precision);
+  let value = operation(value1, value2, 'multiply');
+  value = Math.round(operation(value, pow, 'multiply')) / pow;
+  return value;
 }
 
 function divide (value1, value2, precision) {
-  precision = precision || 2
-  let pow = Math.pow(10, precision)
-  let value = operation(value1, value2, 'divide')
-  value = Math.round(operation(value, pow, 'multiply')) / pow
-  return value
+  precision = precision || 2;
+  let pow = Math.pow(10, precision);
+  let value = operation(value1, value2, 'divide');
+  value = Math.round(operation(value, pow, 'multiply')) / pow;
+  return value;
 }
 
 function isEqual (value1, value2, precision) {
-  return parseFloat(value1).toFixed(precision) === parseFloat(value2).toFixed(precision)
+  return parseFloat(value1).toFixed(precision) === parseFloat(value2).toFixed(precision);
 }
 
 const float = {
@@ -115,6 +115,6 @@ const float = {
   multiply: multiply,
   divide: divide,
   isEqual: isEqual
-}
+};
 
-export default float
+export default float;

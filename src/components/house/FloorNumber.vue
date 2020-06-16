@@ -146,8 +146,8 @@
 </template>
 
 <script>
-import constant from '@/assets/js/constant'
-import { getRegion, getBuildingNumber, getBuildingUnit, getBuildingFloor, getBuildingHouseNumber, getBlueAddressHouse, modifyHouse } from '@/api/house'
+import constant from '@/assets/js/constant';
+import { getRegion, getBuildingNumber, getBuildingUnit, getBuildingFloor, getBuildingHouseNumber, getBlueAddressHouse, modifyHouse } from '@/api/house';
 
 export default {
   name: 'FloorNumber',
@@ -183,19 +183,19 @@ export default {
       loading: false,
       finished: false,
       icon: constant.radioStyle.icon
-    }
+    };
   },
   beforeMount () {
-    let params = this.$route.params
+    let params = this.$route.params;
     if (Object.keys(params).length === 0) {
       if (sessionStorage.getItem('params')) {
-        params = JSON.parse(sessionStorage.getItem('params'))
+        params = JSON.parse(sessionStorage.getItem('params'));
       }
     }
-    this.label = params.label
-    this.houseId = params.houseId
-    this.company = params.company
-    this.searchMethod = params.searchMethod
+    this.label = params.label;
+    this.houseId = params.houseId;
+    this.company = params.company;
+    this.searchMethod = params.searchMethod;
   },
   mounted: function () {
   },
@@ -205,138 +205,138 @@ export default {
         let params = {
           companyId: this.company.companyId,
           name: queryString
-        }
+        };
         getRegion(params).then(result => {
           if (result.data.status === 1) {
-            callback(result.data.data)
+            callback(result.data.data);
           } else {
-            this.$toast(result.data.message)
+            this.$toast(result.data.message);
           }
-        })
+        });
       }
     },
     handleSelect: function (item) {
-      this.region = item
-      this.buildingList = []
-      this.building = null
-      this.buildingCodeList = []
-      this.buildingCode = null
-      this.unitList = []
-      this.unit = null
-      this.floorList = []
-      this.floor = null
-      this.numberList = []
-      this.number = null
+      this.region = item;
+      this.buildingList = [];
+      this.building = null;
+      this.buildingCodeList = [];
+      this.buildingCode = null;
+      this.unitList = [];
+      this.unit = null;
+      this.floorList = [];
+      this.floor = null;
+      this.numberList = [];
+      this.number = null;
       getBuildingNumber(this.region.regionId).then(result => {
         if (result.data.status === 1) {
-          this.buildingList = result.data.data
+          this.buildingList = result.data.data;
           for (let index = 0; index < this.buildingList.length; index++) {
-            this.buildingCodeList.push(this.buildingList[index].buildingCode)
+            this.buildingCodeList.push(this.buildingList[index].buildingCode);
           }
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showBuilding: function () {
       if (this.buildingCodeList.length > 0) {
-        this.showBuildingPopup = true
+        this.showBuildingPopup = true;
       }
     },
     selectBuilding: function (item) {
-      this.showBuildingPopup = false
-      this.buildingCode = item
+      this.showBuildingPopup = false;
+      this.buildingCode = item;
       for (let index = 0; index < this.buildingList.length; index++) {
         if (this.buildingCode === this.buildingList[index].buildingCode) {
-          this.building = this.buildingList[index]
-          break
+          this.building = this.buildingList[index];
+          break;
         }
       }
-      this.unitList = []
-      this.unit = null
-      this.floorList = []
-      this.floor = null
-      this.numberList = []
-      this.number = null
+      this.unitList = [];
+      this.unit = null;
+      this.floorList = [];
+      this.floor = null;
+      this.numberList = [];
+      this.number = null;
       getBuildingUnit(this.building.buildingId).then(result => {
         if (result.data.status === 1) {
-          this.unitList = result.data.data
+          this.unitList = result.data.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showUnit: function () {
       if (this.unitList.length > 0) {
-        this.showUnitPopup = true
+        this.showUnitPopup = true;
       }
     },
     selectUnit: function (item) {
-      this.showUnitPopup = false
-      this.unit = item
-      this.floorList = []
-      this.floor = null
-      this.numberList = []
-      this.number = null
+      this.showUnitPopup = false;
+      this.unit = item;
+      this.floorList = [];
+      this.floor = null;
+      this.numberList = [];
+      this.number = null;
       let params = {
         unit: this.unit
-      }
+      };
       getBuildingFloor(this.building.buildingId, params).then(result => {
         if (result.data.status === 1) {
-          this.floorList = result.data.data
+          this.floorList = result.data.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showFloor: function () {
       if (this.floorList.length > 0) {
-        this.showFloorPopup = true
+        this.showFloorPopup = true;
       }
     },
     selectFloor: function (item) {
-      this.showFloorPopup = false
-      this.floor = item
-      this.numberList = []
-      this.number = null
+      this.showFloorPopup = false;
+      this.floor = item;
+      this.numberList = [];
+      this.number = null;
       let params = {
         unit: this.unit,
         floor: this.floor
-      }
+      };
       getBuildingHouseNumber(this.building.buildingId, params).then(result => {
         if (result.data.status === 1) {
-          this.numberList = result.data.data
+          this.numberList = result.data.data;
         } else {
-          this.$toast(result.data.message)
+          this.$toast(result.data.message);
         }
-      })
+      });
     },
     showNumber: function () {
       if (this.numberList.length > 0) {
-        this.showNumberPopup = true
+        this.showNumberPopup = true;
       }
     },
     selectNumber: function (item) {
-      this.showNumberPopup = false
-      this.number = item
+      this.showNumberPopup = false;
+      this.number = item;
     },
     doSearch: function () {
       if (!this.region) {
-        this.$toast('小区名称必须在下拉表中选择，自行输入无效')
-        return
+        this.$toast('小区名称必须在下拉表中选择，自行输入无效');
+        return;
       }
       if (!this.building) {
-        this.$toast('请选择楼宇编号')
-        return
+        this.$toast('请选择楼宇编号');
+        return;
       }
-      this.total = 0
-      this.houseList = []
-      this.isDefault = false
-      this.activeName = null
-      this.page = 1
-      this.loading = false
-      this.finished = false
-      this.getHouseList()
+      this.total = 0;
+      this.houseList = [];
+      this.isDefault = false;
+      this.activeName = null;
+      this.page = 1;
+      this.loading = false;
+      this.finished = false;
+      this.getHouseList();
     },
     getHouseList: function () {
       let params = {
@@ -346,44 +346,44 @@ export default {
         code: this.number,
         page: this.page++,
         size: 15
-      }
+      };
       getBlueAddressHouse(this.building.buildingId, params).then(result => {
         if (result.data.status === 1) {
-          this.total = result.data.data.total
-          let records = result.data.data.records
+          this.total = result.data.data.total;
+          let records = result.data.data.records;
           for (let index = 0; index < records.length; index++) {
-            let maskCustomerName = records[index].maskCustomerName
+            let maskCustomerName = records[index].maskCustomerName;
             if (maskCustomerName && maskCustomerName !== '无') {
-              records[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1)
+              records[index].relationLabel = maskCustomerName.charAt(maskCustomerName.length - 1);
             } else {
-              records[index].relationLabel = '我家'
+              records[index].relationLabel = '我家';
             }
           }
-          this.houseList = this.houseList.concat(records)
+          this.houseList = this.houseList.concat(records);
           if (!this.activeName) {
             if (this.houseList.length > 0) {
-              this.activeName = this.houseList[0].houseId
+              this.activeName = this.houseList[0].houseId;
             }
           }
         } else {
-          this.$toast(result.data.data.message)
+          this.$toast(result.data.data.message);
         }
-      })
+      });
     },
     doSave: function (item) {
-      let reg = /^.{1,5}$/
+      let reg = /^.{1,5}$/;
       if (reg.test(item.relationLabel)) {
         this.$toast.loading({
           duration: 0,
           forbidClick: true,
           message: '保存中...'
-        })
+        });
         let params = {
           relationLabel: item.relationLabel,
           isDefault: this.isDefault ? 1 : 0
-        }
+        };
         modifyHouse(item.houseId, 4, params).then(result => {
-          this.$toast.clear()
+          this.$toast.clear();
           if (result.data.status === 1) {
             this.$router.push({
               name: 'houseList',
@@ -391,30 +391,30 @@ export default {
                 label: this.label,
                 houseId: this.houseId
               }
-            })
+            });
           } else {
-            this.$toast(result.data.data.message)
+            this.$toast(result.data.data.message);
           }
-        })
+        });
       } else {
-        this.$toast('房屋标签最少1个字最多5个字')
+        this.$toast('房屋标签最少1个字最多5个字');
       }
     },
     setLabel: function (item, label) {
-      item.relationLabel = label
+      item.relationLabel = label;
     },
     onLoad: function () {
       setTimeout(() => {
-        this.loading = false
+        this.loading = false;
         if (this.houseList.length === this.total) {
-          this.finished = true
+          this.finished = true;
         } else {
-          this.getHouseList()
+          this.getHouseList();
         }
-      }, 500)
+      }, 500);
     }
   }
-}
+};
 </script>
 
 <style scoped>
