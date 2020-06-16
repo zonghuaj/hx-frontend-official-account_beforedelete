@@ -265,7 +265,7 @@ const article = (options) => {
       }
     ]
   };
-
+  data.isDefault = true;
   return data;
 };
 // /basic/house/binding
