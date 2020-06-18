@@ -14,12 +14,18 @@ import './assets/reset.css';
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
 import './mock';
 
+import VueTouch from 'vue-touch';
+
 import Pagination from 'tony-ui';
 // 全局引入按需引入UI库 vant
 import './plugins/vant';
 Vue.use(VueWechatTitle);
 Vue.use(Pagination);
 Vue.use(ElementUI);
+
+Vue.use(VueTouch, {
+  name: 'v-touch'
+});
 
 Vue.config.productionTip = false;
 

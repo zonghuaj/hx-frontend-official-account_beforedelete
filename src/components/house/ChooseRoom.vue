@@ -64,7 +64,7 @@ export default {
                     message: result.data.message
                   }).then(() => {
                     this.$router.replace({
-                      name: 'serviceHall',
+                      name: 'serviceEHall', // serviceHall
                       params: {
                         curHouse: house,
                         bindHouse: houseList

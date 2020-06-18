@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import ServiceHall from '@/components/ServiceHall';
+import ServiceEHall from '@/components/servicehall/ServiceEHall';
 import Profile from '@/components/Profile';
 import EditInvoice from '@/components/order/charge/EditInvoice';
 import ConfirmOrder from '@/components/order/charge/ConfirmOrder';
@@ -66,6 +67,15 @@ export default new Router({
     component: ServiceHall,
     meta: {
       title: '微营业厅',
+      keepAlive: true,
+      isBack: false
+    }
+  }, {
+    path: '/serviceEHall',
+    name: 'serviceEHall',
+    component: ServiceEHall,
+    meta: {
+      title: 'E营业厅',
       keepAlive: true,
       isBack: false
     }
