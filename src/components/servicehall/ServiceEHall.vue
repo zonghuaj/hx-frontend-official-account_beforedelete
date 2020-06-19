@@ -1,10 +1,11 @@
 <template>
   <div class="content">
-    <van-swipe :autoplay="3000">
+    <!--van-swipe :autoplay="3000">
       <van-swipe-item v-for="(imaget, index) in images" :key="index">
         <img :src="imaget"/>
       </van-swipe-item>
-    </van-swipe>
+    </van-swipe-->
+    <hx-swipe></hx-swipe>
     <img class="banner" src="@/assets/icon/sy_banner.png" />
     <div class="house">
       <div class="house-left">
@@ -112,6 +113,7 @@ import wxApi from '@/api/wx';
 import orderApi from '@/api/order';
 import chargeApi from '@/api/charge';
 import Vue from 'vue';
+import HxSwipe from '@/components/common/HxSwipe';
 import { Swipe, SwipeItem, Lazyload } from 'vant';
 Vue.use(Swipe);
 Vue.use(SwipeItem);
@@ -119,7 +121,7 @@ Vue.use(Lazyload);
 
 export default {
   name: 'ServiceEHall',
-  components: {},
+  components: { HxSwipe },
   data () {
     return {
       curHouse: {},
@@ -317,8 +319,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
-@import '../../assets/style/var.less';
 
 .content {
   width: 750px;
@@ -534,52 +534,4 @@ export default {
   margin-top: 20px;
   white-space: nowrap;
 }
-
-.van-swipe {
-  &-item {
-    color: @white;
-    line-height: 150px;
-    text-align: center;
-
-    // &:nth-child(even) {
-    //   background-color: #39a9ed;
-    // }
-
-    // &:nth-child(odd) {
-    //   background-color: #66c6f2;
-    // }
-  }
-  img {
-      display: block;
-      box-sizing: border-box;
-      width: 750px;
-      height: 518px;
-      padding: 30px 60px;
-      background-color: @white;
-      pointer-events: none;
-  }
-}
-
-img {
-  display: block;
-  box-sizing: border-box;
-  width: 750px;
-  padding: 30px 60px;
-}
-
-&--vertical {
-    .van-swipe-item {
-      line-height: 200px;
-    }
-  }
-
-  .custom-indicator {
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
-    padding: 2px 5px;
-    color: @white;
-    font-size: 12px;
-    background: rgba(0, 0, 0, 0.1);
-  }
 </style>
