@@ -59,8 +59,8 @@ export default {
     box-sizing: border-box;
     width: 750px;
     height: 518px;
-    padding: 30px 60px;
-    background-color: @white;
+    padding: 30px 30px;
+    // background-color: @white;
     pointer-events: none;
   }
 }

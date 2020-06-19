@@ -1,27 +1,7 @@
 <template>
   <div class="content">
-    <!--van-swipe :autoplay="3000">
-      <van-swipe-item v-for="(imaget, index) in images" :key="index">
-        <img :src="imaget"/>
-      </van-swipe-item>
-    </van-swipe-->
     <hx-swipe></hx-swipe>
-    <img class="banner" src="@/assets/icon/sy_banner.png" />
-    <div class="house">
-      <div class="house-left">
-        <img class="house-left-left" src="@/assets/icon/sy_house.png" />
-        <div class="house-left-right">
-          <span class="house-left-right-up">{{curHouse.hotAddress}}</span>
-          <div class="house-left-right-down">
-            <span class="house-default" v-if="curHouse.isDefault">默认</span>
-            <span class="house-label">{{curHouse.relationLabel}}</span>
-            <span class="house-name">{{curHouse.companyAbbreviationName}}</span>
-            <span>{{curHouse.cardCode}}</span>
-          </div>
-        </div>
-      </div>
-      <img class="house-right" src="@/assets/icon/ty_icon_more.png" @click="goHouseList" />
-    </div>
+    <house-card ref="houseCard" :curHouse="curHouse" :bindHouse="bindHouse"></house-card>
     <div class="handle">
       <div class="handle-head">
         <img class="handle-head-left" src="@/assets/icon/sy_title_icon_briefcase.png" />
@@ -114,6 +94,7 @@ import orderApi from '@/api/order';
 import chargeApi from '@/api/charge';
 import Vue from 'vue';
 import HxSwipe from '@/components/common/HxSwipe';
+import HouseCard from '@/components/common/HouseCard';
 import { Swipe, SwipeItem, Lazyload } from 'vant';
 Vue.use(Swipe);
 Vue.use(SwipeItem);
@@ -121,7 +102,7 @@ Vue.use(Lazyload);
 
 export default {
   name: 'ServiceEHall',
-  components: { HxSwipe },
+  components: { HxSwipe, HouseCard },
   data () {
     return {
       curHouse: {},
@@ -334,7 +315,7 @@ export default {
 
 .house {
   width: 690px;
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
   border-radius: 10px;
   padding: 30px;
   margin: -20px 30px 0;

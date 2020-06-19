@@ -1,14 +1,14 @@
 <template>
   <div class="house">
     <div class="house-left">
-      <img class="house-left-left" src="@/assets/icon/sy_house.png" />
+      <div class="house-left-left"/>
       <div class="house-left-right">
         <span class="house-left-right-up">{{record.hotAddress}}</span>
         <div class="house-left-right-down">
           <span class="house-default" v-if="record.isDefault">默认</span>
           <span class="house-label">{{record.relationLabel}}</span>
           <span class="house-name">{{record.companyAbbreviationName}}</span>
-          <span>{{record.cardCode}}</span>
+          <span style="color: #fddcd1;">{{record.cardCode}}</span>
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@ export default {
 <style scoped>
 .house {
   width: 690px;
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
   border-radius: 10px;
   margin: 20px 30px 0;
   padding: 30px;
@@ -99,6 +99,9 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  background-image: url('../../assets/icon/house_background.png');
 }
 
 .house-left {
@@ -124,7 +127,7 @@ export default {
 .house-left-right-up {
   width: 492px;
   font-size: 30px;
-  color: #333333;
+  color: #ffffff;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
@@ -143,8 +146,8 @@ export default {
 
 .house-default {
   font-size: 22px;
-  color: #ff8400;
-  background-color: #fff0e9;
+  color: #949698;
+  /*background-color: #fff0e9;*/
   margin-right: 20px;
   padding: 0 10px;
 }
@@ -159,6 +162,7 @@ export default {
 
 .house-name {
   margin-right: 20px;
+  color: #fddcd1;
 }
 
 .house-right {
@@ -169,6 +173,6 @@ export default {
 .house-list {
   width: 750px;
   height: 100%;
-  background-color: #f4f5fa;
+   /*background-color: #f4f5fa;*/
 }
 </style>
