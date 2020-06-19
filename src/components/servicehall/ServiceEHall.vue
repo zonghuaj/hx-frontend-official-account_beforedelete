@@ -2,7 +2,7 @@
   <div class="content">
     <van-swipe :autoplay="3000">
       <van-swipe-item v-for="(imaget, index) in images" :key="index">
-        <img :src="imaget" />
+        <img :src="imaget"/>
       </van-swipe-item>
     </van-swipe>
     <img class="banner" src="@/assets/icon/sy_banner.png" />
@@ -316,7 +316,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
+@import '../../assets/style/var.less';
+
 .content {
   width: 750px;
   display: flex;
@@ -532,10 +535,51 @@ export default {
   white-space: nowrap;
 }
 
+.van-swipe {
+  &-item {
+    color: @white;
+    line-height: 150px;
+    text-align: center;
+
+    // &:nth-child(even) {
+    //   background-color: #39a9ed;
+    // }
+
+    // &:nth-child(odd) {
+    //   background-color: #66c6f2;
+    // }
+  }
+  img {
+      display: block;
+      box-sizing: border-box;
+      width: 750px;
+      height: 518px;
+      padding: 30px 60px;
+      background-color: @white;
+      pointer-events: none;
+  }
+}
+
 img {
   display: block;
   box-sizing: border-box;
   width: 750px;
   padding: 30px 60px;
 }
+
+&--vertical {
+    .van-swipe-item {
+      line-height: 200px;
+    }
+  }
+
+  .custom-indicator {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    padding: 2px 5px;
+    color: @white;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.1);
+  }
 </style>
