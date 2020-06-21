@@ -2,6 +2,31 @@
   <div class="content">
     <hx-swipe></hx-swipe>
     <house-card ref="houseCard" :curHouse="curHouse" :bindHouse="bindHouse"></house-card>
+    <div>
+      <van-row>
+          <van-col span="8" class="cell-image pay-image">
+            <div></div>
+          </van-col>
+          <van-col span="8" class="cell-image stop-pay-image">
+            <div></div>
+          </van-col>
+          <van-col span="8" class="cell-image repair-image">
+            <div></div>
+          </van-col>
+      </van-row>
+      <van-row>
+          <van-col span="8" class="cell-image complain-image">
+            <div></div>
+          </van-col>
+          <van-col span="8" class="cell-image infosetting-image">
+            <div></div>
+          </van-col>
+          <van-col span="8" class="cell-image invoice-image">
+            <div></div>
+          </van-col>
+      </van-row>
+
+    </div>
     <div class="handle">
       <div class="handle-head">
         <img class="handle-head-left" src="@/assets/icon/sy_title_icon_briefcase.png" />
@@ -95,8 +120,10 @@ import chargeApi from '@/api/charge';
 import Vue from 'vue';
 import HxSwipe from '@/components/common/HxSwipe';
 import HouseCard from '@/components/common/HouseCard';
-import { Swipe, SwipeItem, Lazyload } from 'vant';
+import { Swipe, SwipeItem, Lazyload, Col, Row } from 'vant';
 Vue.use(Swipe);
+Vue.use(Col);
+Vue.use(Row);
 Vue.use(SwipeItem);
 Vue.use(Lazyload);
 
@@ -514,5 +541,35 @@ export default {
   color: #999999;
   margin-top: 20px;
   white-space: nowrap;
+}
+
+.cell-image {
+  height: 230px;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+}
+
+.pay-image {
+  background-image: url('../../assets/icon/online_pay_background.png');
+}
+
+.stop-pay-image {
+  background-image: url('../../assets/icon/stop_pay_background.png');
+}
+
+.repair-image {
+  background-image: url('../../assets/icon/repair_background.png');
+}
+
+.complain-image {
+  background-image: url('../../assets/icon/complain_background.png');
+}
+
+.infosetting-image {
+  background-image: url('../../assets/icon/infosetting_background.png');
+}
+
+.invoice-image {
+  background-image: url('../../assets/icon/invoice_background.png');
 }
 </style>
