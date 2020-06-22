@@ -16,11 +16,11 @@ import './mock';
 
 import VueTouch from 'vue-touch';
 
-import Pagination from 'tony-ui';
+// import Pagination from 'tony-ui';
 // 全局引入按需引入UI库 vant
 import './plugins/vant';
 Vue.use(VueWechatTitle);
-Vue.use(Pagination);
+// Vue.use(Pagination);
 Vue.use(ElementUI);
 
 Vue.use(VueTouch, {

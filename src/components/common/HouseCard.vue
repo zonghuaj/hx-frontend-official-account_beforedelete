@@ -1,21 +1,27 @@
 <template>
-  <div class="house">
-    <div class="house-left">
-      <div class="house-left-left"/>
-      <div class="house-left-right">
-        <span class="house-left-right-up">{{record.hotAddress}}</span>
-        <div class="house-left-right-down">
-          <span class="house-default" v-if="record.isDefault">默认</span>
-          <span class="house-label">{{record.relationLabel}}</span>
-          <span class="house-name">{{record.companyAbbreviationName}}</span>
-          <span style="color: #fddcd1;">{{record.cardCode}}</span>
+  <div>
+    <div class="house-head">
+        <span class="house-head-left">服务网点</span>
+        <span class="house-head-right">查看更多</span>
+    </div>
+    <div class="house">
+      <div class="house-left">
+        <div class="house-left-left"/>
+        <div class="house-left-right">
+          <span class="house-left-right-up">{{record.hotAddress}}</span>
+          <div class="house-left-right-down">
+            <span class="house-default" v-if="record.isDefault">默认</span>
+            <!--span class="house-label">{{record.relationLabel}}</span-->
+            <span class="house-name">{{record.companyAbbreviationName}}</span>
+            <span style="color: #fddcd1;">{{record.cardCode}}</span>
+          </div>
         </div>
       </div>
+      <img class="house-right" src="@/assets/icon/ty_icon_more.png" @click="switchHouse" v-if="bindHouse" />
+      <van-popup class='house-list' v-model="showPopup" position="right" :close-on-click-overlay="false">
+        <bind-house-grid :bindHouse="bindHouse" @select="select" @goBack="hidePopup" v-if="showPopup"></bind-house-grid>
+      </van-popup>
     </div>
-    <img class="house-right" src="@/assets/icon/ty_icon_more.png" @click="switchHouse" v-if="bindHouse" />
-    <van-popup class='house-list' v-model="showPopup" position="right" :close-on-click-overlay="false">
-      <bind-house-grid :bindHouse="bindHouse" @select="select" @goBack="hidePopup" v-if="showPopup"></bind-house-grid>
-    </van-popup>
   </div>
 </template>
 
@@ -146,7 +152,7 @@ export default {
 
 .house-default {
   font-size: 22px;
-  color: #949698;
+  color: #f4f4f4;
   /*background-color: #fff0e9;*/
   margin-right: 20px;
   padding: 0 10px;
@@ -162,7 +168,7 @@ export default {
 
 .house-name {
   margin-right: 20px;
-  color: #fddcd1;
+  color: #f56a69;
 }
 
 .house-right {
@@ -174,5 +180,19 @@ export default {
   width: 750px;
   height: 100%;
    /*background-color: #f4f5fa;*/
+}
+
+.house-head {
+  display: flex;
+  justify-content: space-between;
+}
+.house-head-left {
+  margin-left: 30px;
+  font-weight: bold;
+}
+.house-head-right {
+  margin-right: 30px;
+  margin-top: 10px;
+  font-size: 22px;
 }
 </style>

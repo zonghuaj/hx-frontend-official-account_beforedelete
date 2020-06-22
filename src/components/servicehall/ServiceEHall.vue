@@ -48,14 +48,35 @@
             <img class="query-column-left" src="@/assets/icon/to_do_business.png" />
             <div class="query-column-right">
               <span class="query-column-right-up">待办业务</span>
-              <span class="query-column-right-down">了解待办业务进度</span>
+              <span class="query-column-right-down">来办业务全知晓</span>
             </div>
           </div>
           <div class="query-column" @click="goHistoryOrderList">
             <img class="query-column-left" src="@/assets/icon/business_history.png" />
             <div class="query-column-right">
-              <span class="query-column-right-up">完结业务</span>
-              <span class="query-column-right-down">查看完结业务记录</span>
+              <span class="query-column-right-up">业务记录</span>
+              <span class="query-column-right-down">历史信息不丢失</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="service">
+      <div class="service-head">
+        <span class="service-head-right">服务网点</span>
+      </div>
+      <div class="service-body">
+        <div class="service-row">
+          <div class="service-column service-hall-image cell-image" @click="goOrderList">
+            <div class="service-column-right">
+              <span class="service-column-right-up">客户大厅</span>
+              <span class="service-column-right-down">快速处理用户需求</span>
+            </div>
+          </div>
+          <div class="service-column repair-site-image cell-image" @click="goHistoryOrderList">
+            <div class="service-column-right">
+              <span class="service-column-right-up">维修站点</span>
+              <span class="service-column-right-down">高效解决各类故障</span>
             </div>
           </div>
         </div>
@@ -393,6 +414,7 @@ export default {
 .handle-head-right {
   font-size: 36px;
   color: #333333;
+  font-weight: bold;
   margin-left: 20px;
 }
 
@@ -444,6 +466,7 @@ export default {
 .query-head-right {
   font-size: 36px;
   color: #333333;
+  font-weight: bold;
   margin-left: 30px;
 }
 
@@ -525,6 +548,14 @@ export default {
   background-image: url('../../assets/icon/invoice_background.png');
 }
 
+.service-hall-image {
+  background-image: url('../../assets/icon/service_hall.png');
+}
+
+.repair-site-image {
+  background-image: url('../../assets/icon/repair_site.png');
+}
+
 .van-col span {
   margin-top: 140px;
   font-size: 20px;
@@ -537,5 +568,69 @@ export default {
     padding: 2px 5px;
     font-size: 12px;
     background: rgba(0, 0, 0, 0.1);
+}
+
+.service {
+  width: 750px;
+  margin-top: 20px;
+}
+
+.service-head {
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.service-head-left {
+  width: 40px;
+  height: 40px;
+}
+
+.service-head-right {
+  font-size: 36px;
+  color: #333333;
+  font-weight: bold;
+  margin-left: 30px;
+}
+
+.service-body {
+  border-radius: 35px;
+  margin: 30px;
+}
+
+.service-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.service-column {
+  width: 45%;
+  border: 1px solid #f7f7f7;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.service-column-right {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-column-right-up {
+  font-size: 26px;
+  color: #333333;
+}
+
+.service-column-right-down {
+  font-size: 20px;
+  color: #999999;
+  margin-top: 20px;
+  white-space: nowrap;
 }
 </style>

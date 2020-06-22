@@ -11,12 +11,6 @@
       <p @click="nav('profile')">个人中心</p>
       <p @click="nav('aboutUs')">关于我们</p>
     </div>
-
-    <el-pagination
-    layout="prev, pager, next"
-    :total="1000">
-  </el-pagination>
-
   </div>
 </template>
 
