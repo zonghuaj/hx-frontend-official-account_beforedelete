@@ -2,108 +2,60 @@
   <div class="content">
     <hx-swipe></hx-swipe>
     <house-card ref="houseCard" :curHouse="curHouse" :bindHouse="bindHouse"></house-card>
-    <div>
-      <van-row>
-          <van-col span="8" class="cell-image pay-image">
-            <div></div>
-          </van-col>
-          <van-col span="8" class="cell-image stop-pay-image">
-            <div></div>
-          </van-col>
-          <van-col span="8" class="cell-image repair-image">
-            <div></div>
-          </van-col>
-      </van-row>
-      <van-row>
-          <van-col span="8" class="cell-image complain-image">
-            <div></div>
-          </van-col>
-          <van-col span="8" class="cell-image infosetting-image">
-            <div></div>
-          </van-col>
-          <van-col span="8" class="cell-image invoice-image">
-            <div></div>
-          </van-col>
-      </van-row>
-
-    </div>
-    <div class="handle">
-      <div class="handle-head">
-        <img class="handle-head-left" src="@/assets/icon/sy_title_icon_briefcase.png" />
-        <span class="handle-head-right">业务办理</span>
-      </div>
-      <div class="handle-row">
-        <div class="handle-column" @click="goCharge">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_Pay.png" />
-          <span class="handle-column-down">供热交费</span>
-        </div>
-        <div class="handle-column" @click="goRepair">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_Tools.png" />
-          <span class="handle-column-down">供热报修</span>
-        </div>
-        <div class="handle-column" @click="goComplain">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_service.png" />
-          <span class="handle-column-down">供热投诉</span>
-        </div>
-        <div class="handle-column" @click="goStopHeating">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_apply.png" />
-          <span class="handle-column-down">停供申请</span>
-        </div>
-      </div>
-      <div class="handle-row">
-        <div class="handle-column" @click="unable">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_hfgr.png" />
-          <span class="handle-column-down">恢复供热</span>
-        </div>
-        <div class="handle-column" @click="goInvoiceList">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_search.png" />
-          <span class="handle-column-down">发票查询</span>
-        </div>
-        <div class="handle-column" @click="unable">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_again.png" />
-          <span class="handle-column-down">重开发票</span>
-        </div>
-        <div class="handle-column" @click="unable">
-          <img class="handle-column-up" src="@/assets/icon/sy_big_icon_information.png" />
-          <span class="handle-column-down">信息维护</span>
-        </div>
-      </div>
-    </div>
     <div class="query">
       <div class="query-head">
-        <img class="query-head-left" src="@/assets/icon/sy_title_icon_query.png" />
         <span class="query-head-right">业务查询</span>
+      </div>
+      <div>
+        <van-row>
+            <van-col span="8" class="cell-image pay-image" @click="goCharge">
+              <div>
+                <span>在线缴费</span>
+              </div>
+            </van-col>
+            <van-col span="8" class="cell-image stop-pay-image">
+              <div>
+                <span>停复热办理</span>
+              </div>
+            </van-col>
+            <van-col span="8" class="cell-image repair-image" @click="goRepair">
+              <div>
+                <span>供热报修</span>
+              </div>
+            </van-col>
+        </van-row>
+        <van-row>
+            <van-col span="8" class="cell-image complain-image" @click="goComplain">
+              <div>
+                <span>供热投诉</span>
+              </div>
+            </van-col>
+            <van-col span="8" class="cell-image infosetting-image">
+              <div>
+                <span>信息维护</span>
+              </div>
+            </van-col>
+            <van-col span="8" class="cell-image invoice-image">
+              <div>
+                <span>发票开具</span>
+              </div>
+            </van-col>
+        </van-row>
       </div>
       <div class="query-body">
         <div class="query-row">
           <div class="query-column" @click="goOrderList">
-            <img class="query-column-left" src="@/assets/icon/sy_big_icon_todo.png" />
+            <img class="query-column-left" src="@/assets/icon/to_do_business.png" />
             <div class="query-column-right">
               <span class="query-column-right-up">待办业务</span>
               <span class="query-column-right-down">了解待办业务进度</span>
             </div>
           </div>
           <div class="query-column" @click="goHistoryOrderList">
-            <img class="query-column-left" src="@/assets/icon/sy_big_icon_end.png" />
+            <img class="query-column-left" src="@/assets/icon/business_history.png" />
             <div class="query-column-right">
               <span class="query-column-right-up">完结业务</span>
               <span class="query-column-right-down">查看完结业务记录</span>
-            </div>
-          </div>
-        </div>
-        <div class="query-row">
-          <div class="query-column" @click="goBusinessList">
-            <img class="query-column-left" src="@/assets/icon/sy_big_icon_business.png" />
-            <div class="query-column-right">
-              <span class="query-column-right-up">客服大厅</span>
-              <span class="query-column-right-down">办理各种供热业务</span>
-            </div>
-          </div>
-          <div class="query-column" @click="goMyMaintenance">
-            <img class="query-column-left" src="@/assets/icon/sy_big_icon_maintenance.png" />
-            <div class="query-column-right">
-              <span class="query-column-right-up">换热站点</span>
-              <span class="query-column-right-down">提供及时维修服务</span>
             </div>
           </div>
         </div>
@@ -473,8 +425,6 @@ export default {
 
 .query {
   width: 750px;
-  background-color: #ffffff;
-  padding: 30px;
   margin-top: 20px;
 }
 
@@ -494,11 +444,13 @@ export default {
 .query-head-right {
   font-size: 36px;
   color: #333333;
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .query-body {
-  border: 1px solid #f7f7f7;
+  background-color: #ffffff;
+  border-radius: 35px;
+  margin: 30px;
 }
 
 .query-row {
@@ -571,5 +523,19 @@ export default {
 
 .invoice-image {
   background-image: url('../../assets/icon/invoice_background.png');
+}
+
+.van-col span {
+  margin-top: 140px;
+  font-size: 20px;
+}
+
+.custom-indicator {
+    position: absolute;
+    right: 5px;
+    top: 25px;
+    padding: 2px 5px;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.1);
 }
 </style>

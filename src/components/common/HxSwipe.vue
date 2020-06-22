@@ -38,7 +38,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../assets/style/var.less";
 .van-swipe {
   &-item {
@@ -58,20 +58,12 @@ export default {
     display: block;
     box-sizing: border-box;
     width: 750px;
-    height: 518px;
+    height: 379px;
     padding: 30px 30px;
-    // background-color: @white;
     pointer-events: none;
   }
-}
-
-.custom-indicator {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  padding: 2px 5px;
-  color: @white;
-  font-size: 12px;
-  background: rgba(0, 0, 0, 0.1);
+  .van-swipe__indicators {
+    bottom: 50px;
+  }
 }
 </style>
