@@ -93,6 +93,7 @@ import chargeApi from '@/api/charge';
 import Vue from 'vue';
 import HxSwipe from '@/components/common/HxSwipe';
 import HouseCard from '@/components/common/HouseCard';
+import mixin from '@/utils/mixin';
 import { Swipe, SwipeItem, Lazyload, Col, Row } from 'vant';
 Vue.use(Swipe);
 Vue.use(Col);
@@ -102,6 +103,7 @@ Vue.use(Lazyload);
 
 export default {
   name: 'ServiceEHall',
+  mixins: [mixin],
   components: { HxSwipe, HouseCard },
   data () {
     return {
@@ -122,15 +124,6 @@ export default {
     }
     this.curHouse = params.curHouse;
     this.bindHouse = params.bindHouse;
-  },
-  mounted: function () {
-    if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL);
-      window.addEventListener('popstate', this.goBack, false);
-    }
-  },
-  destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false);
   },
   methods: {
     goBack: function () {
@@ -307,89 +300,6 @@ export default {
   flex-direction: column;
 }
 
-.banner {
-  width: 750px;
-  height: 320px;
-  background-size: 750px 320px;
-}
-
-.house {
-  width: 690px;
-  /*background-color: #ffffff;*/
-  border-radius: 10px;
-  padding: 30px;
-  margin: -20px 30px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.house-left {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.house-left-left {
-  width: 80px;
-  height: 80px;
-}
-
-.house-left-right {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.house-left-right-up {
-  width: 492px;
-  font-size: 30px;
-  color: #333333;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.house-left-right-down {
-  font-size: 24px;
-  color: #666666;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.house-default {
-  font-size: 22px;
-  color: #ff8400;
-  background-color: #fff0e9;
-  padding: 0 10px;
-  margin-right: 20px;
-}
-
-.house-label {
-  font-size: 22px;
-  color: #ffffff;
-  background-color: #ff6016;
-  padding: 0 10px;
-  margin-right: 20px;
-}
-
-.house-name {
-  margin-right: 20px;
-}
-
-.house-right {
-  width: 18px;
-  height: 30px;
-}
-
 .handle {
   width: 750px;
   background-color: #ffffff;
@@ -424,25 +334,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.handle-column {
-  width: 172.5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.handle-column-up {
-  width: 90px;
-  height: 90px;
-}
-
-.handle-column-down {
-  font-size: 24px;
-  color: #333333;
-  margin-top: 20px;
 }
 
 .query {

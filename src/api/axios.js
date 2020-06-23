@@ -2,6 +2,7 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios';
+import router from '../router';
 // import QS from 'qs'
 import { Toast } from 'vant';
 
@@ -29,6 +30,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     if (response.status === 200) {
+      router.replace({
+        path: '/login'
+      });
       return Promise.resolve(response);
     } else {
       return Promise.reject(response);

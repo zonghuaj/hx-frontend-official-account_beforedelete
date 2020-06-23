@@ -106,9 +106,11 @@ import JSSDKLoader from '@/assets/js/WeChat.js';
 import wxApi from '@/api/wx';
 import orderApi from '@/api/order';
 import chargeApi from '@/api/charge';
+import * as mixin from '@/utils/mixin';
 
 export default {
   name: 'ServiceHall',
+  mixins: [mixin],
   components: {},
   data () {
     return {
@@ -126,15 +128,15 @@ export default {
     this.curHouse = params.curHouse;
     this.bindHouse = params.bindHouse;
   },
-  mounted: function () {
-    if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL);
-      window.addEventListener('popstate', this.goBack, false);
-    }
-  },
-  destroyed: function () {
-    window.removeEventListener('popstate', this.goBack, false);
-  },
+  // mounted: function () {
+  //   if (window.history && window.history.pushState) {
+  //     history.pushState(null, null, document.URL);
+  //     window.addEventListener('popstate', this.goBack, false);
+  //   }
+  // },
+  // destroyed: function () {
+  //   window.removeEventListener('popstate', this.goBack, false);
+  // },
   methods: {
     goBack: function () {
       history.pushState(null, null, document.URL);

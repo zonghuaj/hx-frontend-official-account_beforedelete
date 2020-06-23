@@ -1,21 +1,18 @@
-export const mixin = {
+export default {
   data () {
-    return {};
+    return {
+    };
   },
-  computed: {},
-  methods: {},
-  directives: {
-    'load-more': {
-      bind: (el, binding) => {
-        el.addEventListener('scroll', () => {
-          let scrollHeight = el.scrollHeight;
-          let scrollTop = el.scrollTop;
-          let height = el.clientHeight;
-          if (scrollTop + height >= scrollHeight - 3) {
-            binding.value();
-          }
-        }, false);
-      }
+  mounted: function () {
+    if (window.history && window.history.pushState) {
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
     }
-  }
+  },
+  destroyed: function () {
+    window.removeEventListener('popstate', this.goBack, false);
+  },
+  created () {
+  },
+  methods: {}
 };
